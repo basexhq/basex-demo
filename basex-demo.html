@@ -1,0 +1,555 @@
+<!doctype html>
+<!--
+  BaseX — single-file clickable demo.
+  Fully self-contained: no fonts, no CDN, no images, no network requests.
+  Open this file directly (double-click), attach it to an email, or drop it
+  on any static host — no build, no deploy step. It is also served by the
+  app at /basex-demo.html.
+
+  Swap points:
+    * CONTACT LINKS — the CONTACT constant at the top of the inline script
+      holds the Calendly URL, Telegram handle, and email. Swap the placeholders.
+    * GLOBAL PEACE LINK — search for data-action="peace" and point the
+      surrounding <a> at the Global Peace page when it is live.
+  Regenerate from sample data with:  node scripts/build-demo.js  (npm run demo)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BaseX — Evaluate Impact. Prove Value. (Demo)</title>
+<meta name="description" content="BaseX clickable demo — permissionless impact evaluation. Sample data, real consensus math.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23F6FAF2'/%3E%3Cpath d='M16 5l8 5v10l-8 5-8-5V10z' fill='%232338d6'/%3E%3Cpath d='M16 5l8 5-8 5-8-5z' fill='%233b5bff'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F6FAF2;--bg-2:#E9F4E1;--bg-3:#DCEDCF;--card:#FFFFFF;
+  --fg:#1E3A2A;--fg-dim:#47664F;--fg-muted:#7C947F;
+  --green:#1E9E53;--green-dim:#147A3D;--green-glow:rgba(30,158,83,.10);
+  --amber:#D97706;--amber-bright:#F59E0B;--amber-glow:rgba(245,158,11,.16);
+  --clay:#C4472F;--border:#D9E8CF;--border-b:#A9CE9B;--row-alt:#F1F7EA;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}
+a:hover{color:var(--amber)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(14px,4vw,40px)}
+/* banner */
+.demo-banner{background:var(--fg);color:#F6FAF2;font-family:var(--mono);font-size:.76rem;text-align:center;padding:7px 12px;letter-spacing:.02em}
+/* intro / opening screen */
+.intro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border);padding:48px 0 34px}
+.intro::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:.3;pointer-events:none}
+.intro::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(30,158,83,.18) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(245,158,11,.10) 0%,transparent 50%);pointer-events:none}
+.intro .wrap{position:relative;z-index:1;text-align:center;max-width:820px}
+.intro-logo{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:1.3rem;margin-bottom:26px}
+.intro-release{display:inline-block;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber);border-radius:999px;padding:5px 14px;margin-bottom:22px;background:var(--amber-glow)}
+.intro h1{font-family:var(--mono);font-size:clamp(1.9rem,5.4vw,3.4rem);line-height:1.14;letter-spacing:-.03em;margin-bottom:18px}
+.intro h1 .accent{color:var(--green)}
+.intro-lede{font-size:1.04rem;color:var(--fg-dim);max-width:58ch;margin:0 auto 10px}
+.intro-motto{font-family:var(--mono);font-size:.9rem;color:var(--green-dim);margin-bottom:24px}
+.intro-real{max-width:58ch;margin:0 auto 30px;font-size:.86rem;line-height:1.7;color:var(--fg-dim);border:1px dashed var(--border-b);border-radius:10px;padding:14px 20px;background:rgba(255,255,255,.55);text-align:center}
+.intro-real b{color:var(--fg)}
+.shoulders{margin-bottom:34px}
+.shoulders-lbl{display:block;font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:10px}
+.shoulders-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.shoulder{font-family:var(--mono);font-size:.74rem;color:var(--fg-dim);background:var(--card);border:1px solid var(--border);border-radius:999px;padding:5px 13px;transition:border-color .15s,color .15s}
+.shoulder:hover{border-color:var(--green-dim);color:var(--green-dim)}
+.scroll-cue{display:inline-flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--fg);background:none;border:none;cursor:pointer;letter-spacing:.03em}
+.scroll-cue .arrow{font-size:1.25rem;color:var(--green);animation:cue 1.6s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.intro-foot{margin-top:26px;font-family:var(--mono);font-size:.7rem;color:var(--fg-muted)}
+.intro-foot a{color:var(--fg-muted);text-decoration:underline}
+.intro-foot a:hover{color:var(--amber)}
+/* nav */
+.nav{background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40}
+.nav-in{max-width:1080px;margin:0 auto;padding:0 clamp(14px,4vw,40px);height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;font-size:1.02rem;color:var(--fg)}
+.logo svg{display:block}
+.navlinks{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.navlinks a{color:var(--fg-dim);font-size:.84rem}
+.navlinks a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 22px;border-radius:3px;font-family:var(--mono);font-size:.8rem;font-weight:700;cursor:pointer;border:none;letter-spacing:.03em;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--amber-bright);color:#1E3A2A}
+.btn-primary:hover{background:var(--amber)}
+.btn-ghost{background:transparent;color:var(--fg-dim);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border-b);color:var(--fg);background:var(--bg-2)}
+.btn-join{color:var(--green);border:1px solid var(--green);padding:6px 14px;border-radius:3px;font-size:.8rem;background:transparent;font-family:var(--mono);cursor:pointer}
+.btn-join:hover{background:var(--green-glow)}
+/* hero */
+.hero{position:relative;overflow:hidden;padding:64px 0 56px;border-bottom:1px solid var(--border)}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.35;pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(30,158,83,.22) 0%,transparent 60%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-family:var(--mono);font-size:clamp(1.9rem,5vw,3.2rem);line-height:1.12;letter-spacing:-.04em;margin-bottom:16px}
+.hero h1 .accent{color:var(--green)}
+.hero p{color:var(--fg-dim);max-width:520px;margin-bottom:14px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.chip{font-family:var(--mono);font-size:.72rem;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:4px 12px;color:var(--fg-dim)}
+/* sections */
+.section{padding:36px 0 64px}
+.sec-title{font-family:var(--mono);font-size:1rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px}
+/* feed table */
+.table{background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.thead{display:grid;grid-template-columns:1fr 150px 130px 56px 110px 84px;gap:0;padding:9px 16px;background:var(--bg-2);border-bottom:1px solid var(--border-b);font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted)}
+.row{display:grid;grid-template-columns:1fr 150px 130px 56px 110px 84px;gap:0;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;color:var(--fg);align-items:center}
+.row:last-child{border-bottom:none}
+.row:nth-child(even){background:var(--row-alt)}
+.row:hover{background:var(--amber-glow)}
+.cell{font-size:.82rem;display:flex;align-items:center;gap:8px;overflow:hidden;min-width:0}
+.cell-tags{flex-wrap:wrap}
+.ctitle{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cid{font-family:var(--mono);font-size:.66rem;color:var(--fg-muted);flex-shrink:0}
+.mono-s{font-family:var(--mono);font-size:.76rem}
+.val{color:var(--amber);font-family:var(--mono);font-size:.76rem}
+.muted{color:var(--fg-muted)}
+/* tags */
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.68rem;font-family:var(--mono);font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tag-cat{background:rgba(30,158,83,.12);color:var(--green);border:1px solid rgba(30,158,83,.3)}
+.tag-ebf{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.35)}
+.tag-status-r{background:rgba(30,158,83,.15);color:var(--green);border:1px solid var(--green)}
+.tag-status-p{background:rgba(245,158,11,.2);color:var(--amber);border:1px solid var(--amber)}
+/* claim detail */
+.crumb{font-family:var(--mono);font-size:.76rem;color:var(--fg-muted);display:inline-block;margin:22px 0 14px}
+.claim-h{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.claim-title{font-family:var(--mono);font-size:clamp(1.15rem,2.6vw,1.7rem);line-height:1.35;letter-spacing:-.02em;margin-bottom:14px}
+.claim-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--fg-muted);margin-bottom:22px}
+.consensus{background:var(--green-glow);border:1px solid rgba(30,158,83,.3);border-radius:6px;padding:16px 20px;margin-bottom:28px}
+.consensus .lbl{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted);display:block;margin-bottom:4px}
+.consensus .band{font-family:var(--mono);font-size:1.25rem;font-weight:700;color:var(--green-dim)}
+.consensus .sub{font-size:.78rem;color:var(--fg-dim);margin-top:4px}
+.blind{background:var(--card);border:1px dashed var(--border-b);border-radius:6px;padding:26px 22px;text-align:center;margin-bottom:28px}
+.blind .lock{font-size:1.5rem;margin-bottom:6px}
+.blind p{font-size:.86rem;color:var(--fg-dim);max-width:460px;margin:0 auto}
+.blind p b{color:var(--fg)}
+.ecard{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:10px}
+.ecard-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.eauthor{font-weight:600;font-size:.84rem}
+.eauthor a{color:inherit}.eauthor a:hover{color:var(--green)}
+.erange{font-family:var(--mono);font-size:.78rem;color:var(--amber)}
+.ereason{font-size:.82rem;color:var(--fg-dim)}
+/* forms */
+.formcard{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:clamp(16px,3vw,28px);margin-bottom:26px}
+label{display:block;font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--fg-dim);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px}
+input[type=text],input[type=number],textarea,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--fg);font-family:var(--sans);font-size:.9rem;padding:10px 12px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green-dim)}
+textarea{resize:vertical}
+.fgroup{margin-bottom:18px}
+.dual{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:start;margin-bottom:18px}
+.pane{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px}
+.pane-t{display:block;font-family:var(--mono);font-size:.66rem;font-weight:700;color:var(--green);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+.orsep{align-self:center;font-family:var(--mono);font-size:.7rem;color:var(--fg-muted);text-transform:uppercase}
+.threes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.threes label{font-size:.62rem}
+.conf{display:flex;align-items:center;gap:10px}
+.conf input[type=range]{flex:1;accent-color:var(--green)}
+.conf output{font-family:var(--mono);font-size:.82rem;color:var(--green);min-width:3em;text-align:right}
+.note{font-family:var(--mono);font-size:.7rem;color:var(--amber);background:var(--amber-glow);border:1px solid var(--amber);border-radius:3px;padding:7px 11px;margin-bottom:12px;line-height:1.5}
+.pick{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+.pick-l{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;font-family:var(--mono);font-size:.74rem;color:var(--fg-dim);background:var(--bg);border:1px solid var(--border);border-radius:999px;cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400;margin-bottom:0}
+.pick-l input{accent-color:var(--green);margin:0}
+/* entities/evaluators */
+.simple thead,.simple .thead{grid-template-columns:1fr 130px 170px 70px}
+.simple .row{grid-template-columns:1fr 130px 170px 70px}
+.evrow .thead{grid-template-columns:44px 1fr 150px 90px 80px}
+.evrow .row{grid-template-columns:44px 1fr 150px 90px 80px}
+.repbar{width:74px;height:6px;background:var(--row-alt);border-radius:3px;overflow:hidden;position:relative;display:inline-block}
+.repbar i{position:absolute;left:0;top:0;height:100%;background:var(--green)}
+.profile-head{margin:26px 0 18px}
+.profile-head h2{font-family:var(--mono);font-size:1.3rem;margin-bottom:4px}
+.tagline{color:var(--fg-dim);font-size:.9rem;margin-bottom:8px}
+.creds{margin-top:16px}
+.cred{display:flex;align-items:center;gap:8px;font-size:.84rem;padding:6px 0;border-bottom:1px solid var(--border)}
+.cred:last-child{border-bottom:none}
+.cred .k{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-muted);border:1px solid var(--border);border-radius:999px;padding:1px 7px}
+.cred .sd{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;color:var(--fg-muted)}
+/* docs */
+.step{display:flex;gap:12px;background:var(--green-glow);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:10px;font-size:.88rem}
+.step b{font-family:var(--mono);color:var(--green);flex-shrink:0}
+.doccard{display:block;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:10px;cursor:pointer;color:var(--fg)}
+.doccard:hover{border-color:var(--green-dim)}
+.doccard b{font-family:var(--mono);font-size:.86rem;color:var(--green-dim)}
+.doccard span{display:block;font-size:.78rem;color:var(--fg-dim);margin-top:3px}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(20,40,28,.45);display:none;align-items:center;justify-content:center;z-index:90;padding:18px}
+.overlay.on{display:flex}
+.modal{background:var(--card);border:1px solid var(--border-b);border-radius:10px;max-width:480px;width:100%;padding:28px;text-align:center;box-shadow:0 18px 50px rgba(20,40,28,.25)}
+.modal .mark{font-size:1.7rem;margin-bottom:8px}
+.modal h3{font-family:var(--mono);font-size:1.02rem;line-height:1.4;margin-bottom:10px}
+.modal p{font-size:.88rem;color:var(--fg-dim);margin-bottom:18px}
+.modal .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* footer */
+footer{border-top:1px solid var(--border);padding:26px 0 40px;margin-top:20px}
+footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-height:1.8}
+/* responsive */
+@media(max-width:700px){
+  .thead{display:none}
+  .row{grid-template-columns:1fr;gap:5px;padding:13px 14px}
+  .cell{overflow:visible}
+  .ctitle{white-space:normal}
+  .cell[data-l]::before{content:attr(data-l);flex:0 0 60px;font-family:var(--mono);font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-muted);padding-top:2px}
+  .dual{grid-template-columns:1fr}
+  .orsep{text-align:center}
+  .navlinks{gap:12px;font-size:.78rem}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">🌱 Interactive demo — sample data, clickable preview. Every action explains itself.</div>
+
+<section class="intro"><div class="wrap">
+  <div class="intro-logo">
+    <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l9 5.5v13L16 28l-9-5.5v-13z" fill="#2338d6"/><path d="M16 4l9 5.5-9 5.5-9-5.5z" fill="#3b5bff"/><path d="M16 15v13l-9-5.5v-13z" fill="#1b2aa8"/></svg>
+    BaseX
+  </div>
+  <div class="intro-release">Clickable preview · not the real product yet · built in public</div>
+  <h1>Impact, <span class="accent">honestly priced.</span></h1>
+  <p class="intro-lede">Anyone files a claim about real-world impact — positive or negative.
+  Independent evaluators estimate its value. A transparent, challengeable consensus emerges:
+  what that impact is actually worth. We are not selling anything — we are presenting a
+  vision of planetary unity.</p>
+  <p class="intro-motto">What one person forgets, the network holds.</p>
+  <div class="intro-real"><b>Real talk:</b> reality is multidimensional. It resists convergence
+  on a single number — what is this tree worth twenty years from now? We acknowledge these
+  constraints and push forward anyway: <b>discussing the best approach with partners, building
+  in public.</b> This preview is sample data and honest intent.</div>
+  <div class="shoulders">
+    <span class="shoulders-lbl">Standing on shoulders — inspired by</span>
+    <div class="shoulders-row">
+      <a class="shoulder" href="https://bitcoin.org" target="_blank" rel="noopener">Bitcoin</a>
+      <a class="shoulder" href="https://climatecoordination.org/" target="_blank" rel="noopener">Climate Coordination Network</a>
+      <a class="shoulder" href="https://www.gitcoin.co/" target="_blank" rel="noopener">Gitcoin</a>
+      <a class="shoulder" href="https://gap.karmahq.xyz/" target="_blank" rel="noopener">Karma GAP</a>
+      <a class="shoulder" href="https://giveth.io/" target="_blank" rel="noopener">Giveth</a>
+      <a class="shoulder" href="https://octant.app/" target="_blank" rel="noopener">Octant</a>
+      <a class="shoulder" href="https://artizen.fund/" target="_blank" rel="noopener">Artizen</a>
+    </div>
+  </div>
+  <button class="scroll-cue" data-action="scroll" type="button">Scroll to explore the clickable demo<span class="arrow">↓</span></button>
+  <div class="intro-foot">Carbon removal team? <a href="carbon-xprize.html">Our invitation to you →</a></div>
+</div></section>
+
+<nav class="nav"><div class="nav-in">
+  <a href="#/" class="logo">
+    <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l9 5.5v13L16 28l-9-5.5v-13z" fill="#2338d6"/><path d="M16 4l9 5.5-9 5.5-9-5.5z" fill="#3b5bff"/><path d="M16 15v13l-9-5.5v-13z" fill="#1b2aa8"/></svg>
+    BaseX
+  </a>
+  <div class="navlinks">
+    <a href="#/">Feed</a>
+    <a href="#/entities">Entities</a>
+    <a href="#/evaluators">Evaluators</a>
+    <a href="#/docs">Docs</a>
+    <a href="#/submit">Submit Claim</a>
+    <a href="#login" data-action="join">Login</a>
+    <button class="btn-join" data-action="join" type="button">Join</button>
+  </div>
+</div></nav>
+
+<main id="app" class="wrap"></main>
+
+<footer><div class="wrap">
+  <p>BaseX — permissionless impact evaluation · demo preview.<br>
+  Greatly inspired by the regenerative renaissance, supported by the AI singularity.
+  <!-- GLOBAL PEACE LINK: point this <a> at the Global Peace page when it is live -->
+  See also our <a href="#peace" data-action="peace">plan for Global Peace</a>.</p>
+</div></footer>
+
+<div class="overlay" id="overlay" role="presentation">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-title" id="modal" tabindex="-1">
+    <div class="mark" id="m-mark">🌱</div>
+    <h3 id="m-title"></h3>
+    <p id="m-body"></p>
+    <div class="acts" id="m-acts"></div>
+  </div>
+</div>
+
+<script>
+var DATA = {"entities":[{"idx":0,"name":"Veridian Energy","type":"Corporation","sector":"Renewable Energy","desc":"Fictional offshore-wind and grid-storage developer operating in the North Sea and Baltic, frequently cited for both rapid decarbonization and contested land-use practices.","claims":["veridian-energy-1","veridian-energy-2","veridian-energy-3"]},{"idx":1,"name":"Helios Agritech","type":"Corporation","sector":"Agriculture","desc":"Fictional seed and irrigation-tech company selling drought-resistant cultivars and drip systems to smallholder farmers across East Africa and South Asia.","claims":["helios-agritech-1","helios-agritech-2","helios-agritech-3"]},{"idx":2,"name":"Northbridge Mutual","type":"Cooperative","sector":"Finance","desc":"Fictional member-owned credit cooperative serving post-industrial towns, known for zero-fee basic accounts and community-underwritten small business lending.","claims":["northbridge-mutual-1","northbridge-mutual-2","northbridge-mutual-3"]},{"idx":3,"name":"OpenAtlas Foundation","type":"Nonprofit","sector":"Open Knowledge","desc":"Fictional nonprofit maintaining a free, openly licensed global mapping dataset used by disaster responders, city planners, and logistics startups.","claims":["openatlas-foundation-1","openatlas-foundation-2","openatlas-foundation-3"]},{"idx":4,"name":"Cascadia Water Trust","type":"Nonprofit","sector":"Water & Watersheds","desc":"Fictional land trust acquiring and restoring degraded watershed land in the Pacific Northwest, funded by downstream municipal water utilities.","claims":["cascadia-water-trust-1","cascadia-water-trust-2","cascadia-water-trust-3"]},{"idx":5,"name":"Meridian Logistics","type":"Corporation","sector":"Shipping & Freight","desc":"Fictional mid-size container and short-sea shipping operator piloting electric harbor craft while facing scrutiny over emissions reporting at its legacy diesel fleet.","claims":["meridian-logistics-1","meridian-logistics-2","meridian-logistics-3"]},{"idx":6,"name":"Solace Health Collective","type":"Nonprofit","sector":"Healthcare","desc":"Fictional network of sliding-scale community clinics and a nonprofit generic drug program operating across underserved urban and rural districts.","claims":["solace-health-1","solace-health-2","solace-health-3"]},{"idx":7,"name":"TerraForm Materials","type":"Corporation","sector":"Construction Materials","desc":"Fictional producer of low-carbon cement and recycled steel aggregate, supplying public infrastructure projects under green procurement contracts.","claims":["terraform-materials-1","terraform-materials-2","terraform-materials-3"]},{"idx":8,"name":"Brightline Institute","type":"Nonprofit","sector":"Education","desc":"Fictional education nonprofit running intensive literacy programs and teacher-coaching residencies in districts with persistently low reading scores.","claims":["brightline-institute-1","brightline-institute-2","brightline-institute-3"]},{"idx":9,"name":"Aurora Civic Systems","type":"Corporation","sector":"Government Technology","desc":"Fictional civic-tech vendor selling open-source election audit tooling and municipal service platforms to county and city governments.","claims":["aurora-civic-1","aurora-civic-2","aurora-civic-3"]}],"claims":[{"slug":"veridian-energy-1","entity":"Veridian Energy","entityIdx":0,"by":"ClimateWatch Collective","text":"Veridian Energy's three offshore wind farms displaced an estimated 4.2 Mt of CO2 in 2025, equivalent to removing 900,000 cars from the road, verified against grid dispatch data.","range":"$180M–$420M","tags":["Climate","EBF:Carbon","EBF:Air"],"status":"consensus_reached","agoLabel":"8 weeks ago","baseline":"$210M–$360M in avoided social cost of carbon","nRatings":5},{"slug":"veridian-energy-2","entity":"Veridian Energy","entityIdx":0,"by":"Baltic Fisheries Union","text":"Construction of Veridian's Vela array disrupted cod spawning grounds, reducing local catch volumes by 18% over two seasons with no compensation paid to affected fishing cooperatives.","range":"-$25M to -$60M","tags":["Nature","EBF:Biodiversity","EBF:Water","Wellbeing"],"status":"consensus_reached","agoLabel":"7 weeks ago","baseline":"-$28M to -$45M in uncompensated livelihood losses","nRatings":5},{"slug":"veridian-energy-3","entity":"Veridian Energy","entityIdx":0,"by":"GridForward Institute","text":"Veridian's battery storage pilot kept the regional grid stable through two winter storms, avoiding blackout costs that historically averaged $40M per major outage event.","range":"$60M–$100M","tags":["Climate","Wellbeing"],"status":"pending_consensus","agoLabel":"3 weeks ago","baseline":null,"nRatings":5},{"slug":"helios-agritech-1","entity":"Helios Agritech","entityIdx":1,"by":"FarmData Cooperative","text":"Helios drought-resistant sorghum maintained 85% of normal yields through the 2025 East African drought, while neighboring conventional plots lost half their harvest, protecting income for roughly 200,000 smallholder households.","range":"$90M–$160M","tags":["Wellbeing","EBF:Soil","Climate"],"status":"consensus_reached","agoLabel":"2 months ago","baseline":"$95M–$140M in protected farm income","nRatings":5},{"slug":"helios-agritech-2","entity":"Helios Agritech","entityIdx":1,"by":"Water Rights Watch","text":"Helios drip irrigation kits cut water consumption per hectare by 40% across 50,000 installed farms, easing pressure on two aquifers classified as critically depleted.","range":"$30M–$80M","tags":["EBF:Water","Nature","Climate"],"status":"consensus_reached","agoLabel":"6 weeks ago","baseline":"$35M–$65M in aquifer depletion avoided","nRatings":5},{"slug":"helios-agritech-3","entity":"Helios Agritech","entityIdx":1,"by":"Seed Sovereignty Alliance","text":"Helios licensing terms prohibit seed saving, locking smallholders into annual repurchases and extracting an estimated $12M per year from farmers who previously replanted freely.","range":"-$40M to -$90M over 5 years","tags":["Finance","EBF:Equity","Governance"],"status":"pending_consensus","agoLabel":"3 weeks ago","baseline":null,"nRatings":5},{"slug":"northbridge-mutual-1","entity":"Northbridge Mutual","entityIdx":2,"by":"Fair Banking Project","text":"Northbridge Mutual's zero-fee accounts saved its 340,000 members an estimated $31M in overdraft and maintenance fees in 2025 compared to average regional bank fee schedules.","range":"$25M–$40M","tags":["Finance","EBF:Equity","Wellbeing"],"status":"consensus_reached","agoLabel":"7 weeks ago","baseline":"$26M–$35M in avoided banking fees","nRatings":5},{"slug":"northbridge-mutual-2","entity":"Northbridge Mutual","entityIdx":2,"by":"Main Street Forward","text":"Northbridge's community-underwritten loans kept 120 small businesses open through the 2024 downturn, preserving roughly 1,400 jobs in towns with no other local lender.","range":"$70M–$130M","tags":["Finance","Wellbeing","EBF:Equity"],"status":"consensus_reached","agoLabel":"5 weeks ago","baseline":"$75M–$110M in preserved wages and local economic activity","nRatings":5},{"slug":"northbridge-mutual-3","entity":"Northbridge Mutual","entityIdx":2,"by":"Depositor Rights Group","text":"Northbridge's concentration of 60% of its loan book in regional commercial property exposes member deposits to a correlated downturn the cooperative has not adequately reserved against.","range":"-$50M to -$150M contingent risk","tags":["Governance","Finance"],"status":"pending_consensus","agoLabel":"2 weeks ago","baseline":null,"nRatings":5},{"slug":"openatlas-foundation-1","entity":"OpenAtlas Foundation","entityIdx":3,"by":"Humanitarian Tech Review","text":"OpenAtlas map data was the primary navigation layer for relief routing after the 2025 Mindanao earthquake, cutting average aid delivery times by 9 hours across 300 affected villages.","range":"$40M–$120M","tags":["Wellbeing","EBF:Equity"],"status":"consensus_reached","agoLabel":"7 weeks ago","baseline":"$50M–$95M in accelerated relief value, including mortality reduction","nRatings":5},{"slug":"openatlas-foundation-2","entity":"OpenAtlas Foundation","entityIdx":3,"by":"Open Infrastructure Census","text":"Volunteer contributions to OpenAtlas in 2025 totaled 11 million edits, representing unpaid labor worth $45M at prevailing GIS technician wages, sustaining a dataset commercial providers license for thousands per seat.","range":"$40M–$60M/year","tags":["Education","Governance"],"status":"consensus_reached","agoLabel":"6 weeks ago","baseline":"$38M–$52M annual equivalent labor value","nRatings":5},{"slug":"openatlas-foundation-3","entity":"OpenAtlas Foundation","entityIdx":3,"by":"Data Equity Initiative","text":"OpenAtlas coverage remains 6x denser in wealthy countries than in the Global South, skewing downstream services (routing, insurance, urban planning) against the populations that need them most.","range":"Significant — hard to quantify","tags":["EBF:Equity","Governance"],"status":"pending_consensus","agoLabel":"2 weeks ago","baseline":null,"nRatings":5},{"slug":"cascadia-water-trust-1","entity":"Cascadia Water Trust","entityIdx":4,"by":"Riverkeeper Network","text":"Cascadia's restoration of 12,000 acres of upper watershed cut sediment loads at municipal intakes by 35%, deferring $90M in planned filtration plant upgrades across three cities.","range":"$70M–$110M","tags":["EBF:Water","EBF:Soil","Nature"],"status":"consensus_reached","agoLabel":"8 weeks ago","baseline":"$72M–$95M in deferred infrastructure costs","nRatings":5},{"slug":"cascadia-water-trust-2","entity":"Cascadia Water Trust","entityIdx":4,"by":"Salmon Recovery Council","text":"Restored spawning habitat on Cascadia trust lands contributed to the first increase in wild Chinook returns in 15 years, with redd counts up 22% in treated tributaries versus flat counts elsewhere.","range":"$15M–$45M","tags":["Nature","EBF:Biodiversity","EBF:Water"],"status":"consensus_reached","agoLabel":"6 weeks ago","baseline":"$18M–$35M in fishery and cultural value","nRatings":5},{"slug":"cascadia-water-trust-3","entity":"Cascadia Water Trust","entityIdx":4,"by":"Rural Property Coalition","text":"Cascadia's land acquisitions removed 12,000 acres from county tax rolls and grazing leases, costing rural counties an estimated $2.8M annually in revenue and lease income with no replacement mechanism.","range":"-$2M to -$4M/year","tags":["Finance","Governance"],"status":"pending_consensus","agoLabel":"2 weeks ago","baseline":null,"nRatings":5},{"slug":"meridian-logistics-1","entity":"Meridian Logistics","entityIdx":5,"by":"Port Air Quality Alliance","text":"Meridian's electric harbor fleet eliminated diesel particulate emissions on 14 daily routes, measurably reducing asthma-related ER visits in two adjacent port neighborhoods by 11%.","range":"$20M–$50M","tags":["EBF:Air","Climate","Wellbeing"],"status":"consensus_reached","agoLabel":"7 weeks ago","baseline":"$22M–$40M in avoided health costs","nRatings":5},{"slug":"meridian-logistics-2","entity":"Meridian Logistics","entityIdx":5,"by":"Maritime Transparency Project","text":"Fuel purchase records leaked from Meridian's legacy fleet imply CO2 emissions 25% above its published figures, suggesting systematic underreporting across its long-haul routes since 2023.","range":"-$60M to -$120M","tags":["Governance","Climate","EBF:Carbon"],"status":"pending_consensus","agoLabel":"3 weeks ago","baseline":null,"nRatings":5},{"slug":"meridian-logistics-3","entity":"Meridian Logistics","entityIdx":5,"by":"Coastal Shippers Association","text":"Meridian's short-sea routes moved 80,000 truckloads of freight off congested coastal highways in 2025, cutting road maintenance, accident, and congestion costs for the public.","range":"$30M–$70M","tags":["Climate","EBF:Air","EBF:Carbon"],"status":"consensus_reached","agoLabel":"5 weeks ago","baseline":"$32M–$55M in avoided road externalities","nRatings":5},{"slug":"solace-health-1","entity":"Solace Health Collective","entityIdx":6,"by":"Rural Health Monitor","text":"Solace's 14 rural clinics provided primary care to 90,000 patients who previously traveled 50+ miles, reducing preventable hospitalizations in served counties by 17% in two years.","range":"$55M–$95M","tags":["Healthcare","Wellbeing","EBF:Equity"],"status":"consensus_reached","agoLabel":"8 weeks ago","baseline":"$58M–$85M in avoided hospitalization and travel costs","nRatings":5},{"slug":"solace-health-2","entity":"Solace Health Collective","entityIdx":6,"by":"Pharma Cost Watch","text":"Solace's nonprofit generic program sells 40 essential medications at production cost plus 10%, saving patients an average of 78% versus retail and pressuring two commercial chains to match prices regionally.","range":"$35M–$70M/year","tags":["Healthcare","Finance","EBF:Equity"],"status":"consensus_reached","agoLabel":"6 weeks ago","baseline":"$40M–$60M annual patient savings including price-pressure effects","nRatings":5},{"slug":"solace-health-3","entity":"Solace Health Collective","entityIdx":6,"by":"Clinical Standards Forum","text":"Solace clinics operate with 40% fewer physicians per patient than national standards, relying on nurse practitioners beyond recommended scope in three states, creating quality-of-care risk that has not been independently assessed.","range":"Unquantified risk","tags":["Healthcare","Governance"],"status":"pending_consensus","agoLabel":"2 weeks ago","baseline":null,"nRatings":5},{"slug":"terraform-materials-1","entity":"TerraForm Materials","entityIdx":7,"by":"Built Environment Lab","text":"TerraForm's low-carbon cement, used in 60 public projects in 2025, embodied 45% less CO2 than Portland cement equivalents, avoiding 380,000 tonnes of emissions at no cost premium to taxpayers.","range":"$15M–$40M","tags":["Climate","EBF:Carbon"],"status":"consensus_reached","agoLabel":"7 weeks ago","baseline":"$18M–$32M in avoided emissions at social cost of carbon","nRatings":5},{"slug":"terraform-materials-2","entity":"TerraForm Materials","entityIdx":7,"by":"Worker Safety Coalition","text":"TerraForm's recycled aggregate line recorded an injury rate three times the industry average in 2024-2025, with 14 serious incidents linked to inadequate machine guarding documented in OSHA filings.","range":"-$8M to -$20M","tags":["Wellbeing","Governance"],"status":"consensus_reached","agoLabel":"6 weeks ago","baseline":"-$9M to -$16M in worker harm and uncompensated costs","nRatings":5},{"slug":"terraform-materials-3","entity":"TerraForm Materials","entityIdx":7,"by":"Circular Economy Observatory","text":"TerraForm diverted 600,000 tonnes of demolition waste from landfills into structural aggregate in 2025, extending regional landfill life by an estimated 14 months and displacing virgin quarrying.","range":"$10M–$30M","tags":["Nature","EBF:Soil"],"status":"pending_consensus","agoLabel":"3 weeks ago","baseline":null,"nRatings":5},{"slug":"brightline-institute-1","entity":"Brightline Institute","entityIdx":8,"by":"Literacy Outcomes Tracker","text":"Brightline's structured literacy program moved 12,000 third-graders from below-basic to proficient reading over three years, in districts where baseline trajectories predicted fewer than 4,000 would reach proficiency.","range":"$120M–$300M lifetime","tags":["Education","Wellbeing","EBF:Equity"],"status":"consensus_reached","agoLabel":"8 weeks ago","baseline":"$140M–$240M in lifetime earnings effects","nRatings":5},{"slug":"brightline-institute-2","entity":"Brightline Institute","entityIdx":8,"by":"Teacher Voice Project","text":"Brightline's teacher-coaching residency retained 88% of participating early-career teachers versus a 61% district baseline, saving replacement and retraining costs across 40 schools.","range":"$8M–$18M","tags":["Education","Wellbeing"],"status":"consensus_reached","agoLabel":"5 weeks ago","baseline":"$9M–$15M in avoided turnover costs","nRatings":5},{"slug":"brightline-institute-3","entity":"Brightline Institute","entityIdx":8,"by":"Curriculum Equity Forum","text":"Brightline's program requires districts to adopt its proprietary curriculum and assessment platform, creating $1.2M/year in per-district lock-in costs that persist after the philanthropic subsidy expires.","range":"-$15M to -$35M over 5 years","tags":["Education","Governance"],"status":"pending_consensus","agoLabel":"2 weeks ago","baseline":null,"nRatings":5},{"slug":"aurora-civic-1","entity":"Aurora Civic Systems","entityIdx":9,"by":"Election Integrity Consortium","text":"Aurora's open-source risk-limiting audit tools were used to verify outcomes in 200 county elections in 2024-2025, catching two tabulation errors and measurably increasing voter confidence in post-election surveys.","range":"High civic value — $20M–$60M proxy","tags":["Governance"],"status":"consensus_reached","agoLabel":"7 weeks ago","baseline":"$25M–$50M in audit cost savings and confidence effects","nRatings":5},{"slug":"aurora-civic-2","entity":"Aurora Civic Systems","entityIdx":9,"by":"Municipal Efficiency Watch","text":"Aurora's permitting platform cut average small-business permit approval from 45 days to 12 across 30 cities, unlocking earlier openings worth an estimated $45M in accelerated economic activity.","range":"$35M–$60M","tags":["Governance","Finance"],"status":"consensus_reached","agoLabel":"6 weeks ago","baseline":"$36M–$52M in accelerated business activity","nRatings":5},{"slug":"aurora-civic-3","entity":"Aurora Civic Systems","entityIdx":9,"by":"Digital Privacy Caucus","text":"Aurora's municipal service platform aggregates resident interaction data across 30 cities with retention terms that permit vendor-side analytics, creating a surveillance-adjacent data asset no city council explicitly approved.","range":"Unpriced civic risk","tags":["Governance","Wellbeing"],"status":"pending_consensus","agoLabel":"2 weeks ago","baseline":null,"nRatings":5}],"ratings":{"aurora-civic-1":[{"evaluator":"mei_lin","estimated_value_range":"$25M–$50M","reasoning":"Both caught errors would have flipped local races; corrective value is concrete."},{"evaluator":"priya_raghavan","estimated_value_range":"$30M–$60M","reasoning":"Confidence gains in audited counties exceed national trend by 9 points."},{"evaluator":"daniel_roth","estimated_value_range":"$20M–$40M","reasoning":"Audit labor costs fell by two-thirds versus manual methods."},{"evaluator":"aisha_karim","estimated_value_range":"$22M–$45M","reasoning":"Code transparency enables independent verification commercial tools block."},{"evaluator":"kwame_asante","estimated_value_range":"$25M–$55M","reasoning":"Replacement cost via proprietary vendors would triple county spending."}],"aurora-civic-2":[{"evaluator":"marcus_webb","estimated_value_range":"$35M–$55M","reasoning":"33-day acceleration times average daily revenue of affected businesses."},{"evaluator":"robert_maguire","estimated_value_range":"$40M–$60M","reasoning":"Staff time savings inside city halls are additional to the headline."},{"evaluator":"owen_pearce","estimated_value_range":"$30M–$48M","reasoning":"Some permits were for relocations, not new activity; trimming."},{"evaluator":"amara_okonkwo","estimated_value_range":"$36M–$55M","reasoning":"Approval time data is platform-logged and independently auditable."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$35M–$50M","reasoning":"Restaurant and retail openings show clearest acceleration effect."}],"aurora-civic-3":[{"evaluator":"mei_lin","estimated_value_range":"-$10M to -$40M contingent","reasoning":"Retention terms verified; consent chain from residents is absent."},{"evaluator":"priya_raghavan","estimated_value_range":"-$5M to -$20M contingent","reasoning":"Data is pseudonymized; re-identification risk is the open question."},{"evaluator":"daniel_roth","estimated_value_range":"Structural risk — grows with footprint","reasoning":"Cross-city aggregation is the harm; no single contract reveals it."},{"evaluator":"aisha_karim","estimated_value_range":"-$8M to -$30M contingent","reasoning":"Breach or subpoena scenarios carry the bulk of the expected cost."},{"evaluator":"kwame_asante","estimated_value_range":"-$5M to -$25M contingent","reasoning":"Terms are amendable at renewal; risk is real but contractually fixable."}],"brightline-institute-1":[{"evaluator":"elena_vasquez","estimated_value_range":"$130M–$240M","reasoning":"Third-grade reading proficiency is among the best-evidenced earnings predictors."},{"evaluator":"mei_lin","estimated_value_range":"$120M–$200M","reasoning":"Matched-district comparison is solid though not a true RCT."},{"evaluator":"daniel_roth","estimated_value_range":"$150M–$300M","reasoning":"Reduced special education placements add near-term district savings."},{"evaluator":"lars_henriksen","estimated_value_range":"$140M–$250M","reasoning":"Discounted lifetime earnings delta per proficient reader, conservatively."},{"evaluator":"nina_fischer","estimated_value_range":"$120M–$220M","reasoning":"Fade-out risk argues for the conservative end; cohort tracking continues."}],"brightline-institute-2":[{"evaluator":"elena_vasquez","estimated_value_range":"$8M–$14M","reasoning":"Retention differential verified against district HR records."},{"evaluator":"mei_lin","estimated_value_range":"$10M–$18M","reasoning":"Per-teacher replacement cost of $25k is if anything low for these districts."},{"evaluator":"daniel_roth","estimated_value_range":"$9M–$15M","reasoning":"Selection effects are partially controlled by lottery admission."},{"evaluator":"lars_henriksen","estimated_value_range":"$10M–$16M","reasoning":"Continuity gains for students are real but excluded from this estimate."},{"evaluator":"nina_fischer","estimated_value_range":"$8M–$13M","reasoning":"Some retained teachers would have stayed regardless; trimming 20%."}],"brightline-institute-3":[{"evaluator":"marcus_webb","estimated_value_range":"-$18M to -$30M","reasoning":"Contract terms confirm auto-renewal at full price post-subsidy."},{"evaluator":"owen_pearce","estimated_value_range":"-$15M to -$28M","reasoning":"Costs are real but comparable to incumbent platforms being replaced."},{"evaluator":"priya_raghavan","estimated_value_range":"-$25M to -$35M","reasoning":"Switching costs compound; assessment data is not portable."},{"evaluator":"aisha_karim","estimated_value_range":"-$12M to -$22M","reasoning":"Brightline's pricing is below-market; lock-in is the issue, not price."},{"evaluator":"kwame_asante","estimated_value_range":"-$15M to -$30M","reasoning":"Sole-source renewals bypass competitive bidding in most districts."}],"cascadia-water-trust-1":[{"evaluator":"elena_vasquez","estimated_value_range":"$75M–$100M","reasoning":"Two of three cities formally removed upgrades from capital plans."},{"evaluator":"amara_okonkwo","estimated_value_range":"$70M–$95M","reasoning":"Turbidity monitoring confirms sustained sediment reduction."},{"evaluator":"lars_henriksen","estimated_value_range":"$80M–$110M","reasoning":"Avoided debt service adds to the headline deferral figure."},{"evaluator":"sofia_marchetti","estimated_value_range":"$60M–$85M","reasoning":"One deferral was partly attributable to demand decline, not restoration."},{"evaluator":"nina_fischer","estimated_value_range":"$70M–$95M","reasoning":"Green-vs-grey infrastructure comparison follows standard WRI method."}],"cascadia-water-trust-2":[{"evaluator":"elena_vasquez","estimated_value_range":"$15M–$30M","reasoning":"Treated-vs-control tributary design makes attribution unusually clean."},{"evaluator":"amara_okonkwo","estimated_value_range":"$25M–$45M","reasoning":"Cultural and treaty-right value understated by market methods."},{"evaluator":"lars_henriksen","estimated_value_range":"$15M–$35M","reasoning":"Recreational and commercial fishery values anchor the lower band."},{"evaluator":"sofia_marchetti","estimated_value_range":"$18M–$38M","reasoning":"Ocean conditions improved concurrently; restoration share is ~60%."},{"evaluator":"nina_fischer","estimated_value_range":"$16M–$32M","reasoning":"Redd count methodology is standard and independently collected."}],"cascadia-water-trust-3":[{"evaluator":"amara_okonkwo","estimated_value_range":"-$2.5M to -$3.5M/year","reasoning":"Tax roll impact verified; PILT payments cover only a fraction."},{"evaluator":"mei_lin","estimated_value_range":"-$2M to -$3M/year","reasoning":"Some grazing leases were already lapsing before acquisition."},{"evaluator":"priya_raghavan","estimated_value_range":"-$3M to -$4M/year","reasoning":"Indirect losses to feed stores and vets add to the direct figure."},{"evaluator":"daniel_roth","estimated_value_range":"-$1.5M to -$2.8M/year","reasoning":"Trust's voluntary county payments offset roughly a third."},{"evaluator":"tomas_nkemelu","estimated_value_range":"-$2.5M to -$3.8M/year","reasoning":"Displaced ranchers relocated herds at real cost; revenue loss is ongoing."}],"helios-agritech-1":[{"evaluator":"priya_raghavan","estimated_value_range":"$90M–$140M","reasoning":"Yield differentials from field trials are consistent with farm survey data."},{"evaluator":"sofia_marchetti","estimated_value_range":"$100M–$160M","reasoning":"Household income protection compounds via avoided distress sales of livestock."},{"evaluator":"nina_fischer","estimated_value_range":"$80M–$120M","reasoning":"85% retention is the best plots; median plots retained closer to 75%."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$95M–$150M","reasoning":"200k household figure verified against distributor records."},{"evaluator":"kwame_asante","estimated_value_range":"$85M–$130M","reasoning":"Loan default rates in Helios districts fell measurably during the drought."}],"helios-agritech-2":[{"evaluator":"elena_vasquez","estimated_value_range":"$30M–$60M","reasoning":"Metered usage confirms ~38% savings; aquifer impact modeling is sound."},{"evaluator":"amara_okonkwo","estimated_value_range":"$40M–$80M","reasoning":"Shadow price of water in depleted basins justifies upper range."},{"evaluator":"lars_henriksen","estimated_value_range":"$25M–$55M","reasoning":"Kit abandonment rate of 15% after year two dilutes aggregate savings."},{"evaluator":"sofia_marchetti","estimated_value_range":"$35M–$70M","reasoning":"Satellite soil moisture data corroborates reduced extraction."},{"evaluator":"nina_fischer","estimated_value_range":"$30M–$65M","reasoning":"Both aquifers show slowed decline curves since rollout."}],"helios-agritech-3":[{"evaluator":"amara_okonkwo","estimated_value_range":"-$50M to -$80M","reasoning":"License terms verified; repurchase obligation is enforceable and enforced."},{"evaluator":"mei_lin","estimated_value_range":"-$60M to -$100M","reasoning":"Annual cost per farm exceeds the claimed average in poorer districts."},{"evaluator":"priya_raghavan","estimated_value_range":"-$30M to -$60M","reasoning":"Yield gains partially offset extraction; net harm is smaller than claimed."},{"evaluator":"daniel_roth","estimated_value_range":"-$40M to -$75M","reasoning":"Dependency dynamics are real but adoption remains voluntary."},{"evaluator":"tomas_nkemelu","estimated_value_range":"-$45M to -$85M","reasoning":"No viable alternative supplier in three of five target regions."}],"meridian-logistics-1":[{"evaluator":"elena_vasquez","estimated_value_range":"$25M–$45M","reasoning":"ER visit decline tracks fleet conversion timeline cleanly."},{"evaluator":"amara_okonkwo","estimated_value_range":"$20M–$38M","reasoning":"PM2.5 monitors near berths show 30% drop; attribution is strong."},{"evaluator":"lars_henriksen","estimated_value_range":"$22M–$42M","reasoning":"Standard cost-per-avoided-ER-visit plus chronic exposure benefits."},{"evaluator":"sofia_marchetti","estimated_value_range":"$25M–$50M","reasoning":"School absence data shows parallel improvement not yet priced in."},{"evaluator":"nina_fischer","estimated_value_range":"$18M–$35M","reasoning":"A concurrent truck rerouting project shares some credit."}],"meridian-logistics-2":[{"evaluator":"mei_lin","estimated_value_range":"-$70M to -$110M","reasoning":"Bunker fuel receipts vs reported burn rates show a persistent gap."},{"evaluator":"priya_raghavan","estimated_value_range":"-$50M to -$90M","reasoning":"Some discrepancy is explained by chartered-out vessels; not all."},{"evaluator":"daniel_roth","estimated_value_range":"-$60M to -$120M","reasoning":"If confirmed, ETS liabilities and customer clawbacks land in this band."},{"evaluator":"aisha_karim","estimated_value_range":"-$65M to -$100M","reasoning":"Reporting patterns match known under-declaration schemes."},{"evaluator":"kwame_asante","estimated_value_range":"-$55M to -$115M","reasoning":"Regulatory exposure depends on intent findings; range reflects both paths."}],"meridian-logistics-3":[{"evaluator":"elena_vasquez","estimated_value_range":"$30M–$55M","reasoning":"Per-truck-mile externality factors are well established; volume verified."},{"evaluator":"amara_okonkwo","estimated_value_range":"$35M–$65M","reasoning":"Truck-involved crash rates on the corridor fell after route launch."},{"evaluator":"mei_lin","estimated_value_range":"$25M–$45M","reasoning":"Maintenance savings accrue over decades; discounting to present value."},{"evaluator":"daniel_roth","estimated_value_range":"$32M–$60M","reasoning":"Modal shift is genuine; backhaul utilization makes it durable."},{"evaluator":"lars_henriksen","estimated_value_range":"$30M–$58M","reasoning":"Congestion relief during peak hours is the largest single component."}],"northbridge-mutual-1":[{"evaluator":"amara_okonkwo","estimated_value_range":"$25M–$35M","reasoning":"Fee benchmark methodology matches CFPB comparison standards."},{"evaluator":"mei_lin","estimated_value_range":"$28M–$40M","reasoning":"Member fee data audited; regional comparison banks skew high-fee."},{"evaluator":"priya_raghavan","estimated_value_range":"$20M–$30M","reasoning":"Some members would have qualified for low-fee accounts elsewhere."},{"evaluator":"daniel_roth","estimated_value_range":"$27M–$38M","reasoning":"Overdraft savings concentrate among lowest-income members."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$25M–$36M","reasoning":"Figure is consistent with cooperative's audited non-interest income gap."}],"northbridge-mutual-2":[{"evaluator":"amara_okonkwo","estimated_value_range":"$70M–$110M","reasoning":"Payroll multiplier of 1.6 for isolated towns supports the range."},{"evaluator":"mei_lin","estimated_value_range":"$80M–$130M","reasoning":"Survival rate of Northbridge borrowers doubled the regional baseline."},{"evaluator":"priya_raghavan","estimated_value_range":"$60M–$95M","reasoning":"Some businesses would have survived on trade credit; trimming attribution."},{"evaluator":"daniel_roth","estimated_value_range":"$75M–$115M","reasoning":"Local tax receipts in lending towns held flat while peers fell 8%."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$70M–$120M","reasoning":"Pattern matches documented countercyclical lending in prior recessions."}],"northbridge-mutual-3":[{"evaluator":"mei_lin","estimated_value_range":"-$60M to -$120M","reasoning":"Concentration is real; reserves meet minimums but not stress scenarios."},{"evaluator":"priya_raghavan","estimated_value_range":"-$40M to -$90M","reasoning":"Loan-to-value ratios are conservative, softening the tail risk."},{"evaluator":"daniel_roth","estimated_value_range":"-$70M to -$150M","reasoning":"Correlated regional shock would hit collateral and borrowers together."},{"evaluator":"aisha_karim","estimated_value_range":"-$50M to -$100M","reasoning":"Member oversight is engaged but lacks independent risk committee."},{"evaluator":"kwame_asante","estimated_value_range":"-$45M to -$110M","reasoning":"Comparable thrifts with this profile required 1.5x current reserves."}],"openatlas-foundation-1":[{"evaluator":"priya_raghavan","estimated_value_range":"$50M–$100M","reasoning":"Routing logs from three relief agencies confirm the time savings."},{"evaluator":"sofia_marchetti","estimated_value_range":"$60M–$120M","reasoning":"Nine hours is decisive for trauma and dehydration cases."},{"evaluator":"nina_fischer","estimated_value_range":"$35M–$70M","reasoning":"Commercial alternatives existed but lacked village-level coverage."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$45M–$90M","reasoning":"Pre-quake volunteer mapping of the region was unusually complete."},{"evaluator":"kwame_asante","estimated_value_range":"$50M–$95M","reasoning":"Value of statistical life methodology applied conservatively."}],"openatlas-foundation-2":[{"evaluator":"elena_vasquez","estimated_value_range":"$40M–$55M","reasoning":"Edit-hours methodology mirrors accepted Wikipedia valuation studies."},{"evaluator":"mei_lin","estimated_value_range":"$35M–$50M","reasoning":"Some edits are automated imports; discounting raw edit counts 20%."},{"evaluator":"daniel_roth","estimated_value_range":"$45M–$60M","reasoning":"Volunteer skill mix skews senior; wage benchmark may be too low."},{"evaluator":"lars_henriksen","estimated_value_range":"$38M–$52M","reasoning":"Replacement cost via commercial vendors lands in the same band."},{"evaluator":"nina_fischer","estimated_value_range":"$35M–$48M","reasoning":"Quality variance across regions argues for the conservative end."}],"openatlas-foundation-3":[{"evaluator":"priya_raghavan","estimated_value_range":"-$20M to -$80M/year in misallocated services","reasoning":"Density gap verified; downstream harm estimate is necessarily rough."},{"evaluator":"sofia_marchetti","estimated_value_range":"Material but unquantifiable","reasoning":"Planning tools trained on sparse data systematically underserve informal settlements."},{"evaluator":"nina_fischer","estimated_value_range":"-$10M to -$40M/year","reasoning":"Premium models penalize unmapped regions with uncertainty loadings."},{"evaluator":"tomas_nkemelu","estimated_value_range":"Structural — compounds annually","reasoning":"Gap is closing too slowly to self-correct within a decade."},{"evaluator":"kwame_asante","estimated_value_range":"-$15M to -$50M/year","reasoning":"Targeted mapping grants have measurably narrowed the gap where funded."}],"solace-health-1":[{"evaluator":"priya_raghavan","estimated_value_range":"$55M–$85M","reasoning":"Hospitalization decline matches clinic catchment areas precisely."},{"evaluator":"sofia_marchetti","estimated_value_range":"$60M–$95M","reasoning":"Early chronic disease management is the main driver; undercounted if anything."},{"evaluator":"nina_fischer","estimated_value_range":"$50M–$75M","reasoning":"Avoided admissions priced at actual regional payer rates."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$58M–$88M","reasoning":"State claims data independently corroborates the 17% figure."},{"evaluator":"kwame_asante","estimated_value_range":"$55M–$80M","reasoning":"Travel burden reduction alone is worth $8M annually."}],"solace-health-2":[{"evaluator":"amara_okonkwo","estimated_value_range":"$35M–$55M","reasoning":"Direct savings verified from dispensing volumes and price lists."},{"evaluator":"mei_lin","estimated_value_range":"$45M–$70M","reasoning":"Competitive matching by chains doubles the direct effect."},{"evaluator":"priya_raghavan","estimated_value_range":"$35M–$50M","reasoning":"Some volume is insured patients whose savings accrue to payers."},{"evaluator":"daniel_roth","estimated_value_range":"$40M–$65M","reasoning":"Adherence gains from affordability prevent costly downstream care."},{"evaluator":"tomas_nkemelu","estimated_value_range":"$38M–$58M","reasoning":"Price-pressure effect is real but limited to a three-state footprint."}],"solace-health-3":[{"evaluator":"mei_lin","estimated_value_range":"-$5M to -$30M contingent","reasoning":"Staffing ratios verified; outcome data to date shows no deficit."},{"evaluator":"priya_raghavan","estimated_value_range":"Minimal — likely overstated","reasoning":"NP-led care matches physician outcomes in comparable settings."},{"evaluator":"daniel_roth","estimated_value_range":"-$10M to -$25M contingent","reasoning":"Premium loadings for the staffing model imply real perceived risk."},{"evaluator":"aisha_karim","estimated_value_range":"-$5M to -$20M contingent","reasoning":"Complex case escalation pathways are the genuine weak point."},{"evaluator":"kwame_asante","estimated_value_range":"Low if telehealth backup holds","reasoning":"Scope concerns are technical; physician tele-consult coverage mitigates."}],"terraform-materials-1":[{"evaluator":"elena_vasquez","estimated_value_range":"$15M–$30M","reasoning":"Third-party EPDs confirm the 45% embodied carbon reduction."},{"evaluator":"amara_okonkwo","estimated_value_range":"$18M–$35M","reasoning":"Zero cost premium verified across procurement records."},{"evaluator":"mei_lin","estimated_value_range":"$16M–$30M","reasoning":"380kt figure uses correct cradle-to-gate boundaries."},{"evaluator":"daniel_roth","estimated_value_range":"$20M–$40M","reasoning":"Demonstration effect is pulling other bidders toward low-carbon mixes."},{"evaluator":"lars_henriksen","estimated_value_range":"$15M–$28M","reasoning":"Supplementary materials supply constraints may cap scale-up."}],"terraform-materials-2":[{"evaluator":"priya_raghavan","estimated_value_range":"-$10M to -$18M","reasoning":"OSHA records confirm both the rate and the guarding citations."},{"evaluator":"sofia_marchetti","estimated_value_range":"-$8M to -$14M","reasoning":"Claims paid plus wage loss beyond compensation caps."},{"evaluator":"nina_fischer","estimated_value_range":"-$9M to -$16M","reasoning":"Silica exposure readings add chronic harm not in the incident count."},{"evaluator":"tomas_nkemelu","estimated_value_range":"-$12M to -$20M","reasoning":"Underreporting is likely given temp-worker share on that line."},{"evaluator":"kwame_asante","estimated_value_range":"-$8M to -$13M","reasoning":"Remediation began Q3 2025; trailing rate is improving."}],"terraform-materials-3":[{"evaluator":"elena_vasquez","estimated_value_range":"$12M–$25M","reasoning":"Landfill tipping fee avoidance and deferred capacity expansion."},{"evaluator":"amara_okonkwo","estimated_value_range":"$8M–$18M","reasoning":"Virgin aggregate displacement is regional; transport offsets some gain."},{"evaluator":"lars_henriksen","estimated_value_range":"$10M–$22M","reasoning":"Recycled aggregate met structural spec in all audited batches."},{"evaluator":"sofia_marchetti","estimated_value_range":"$15M–$30M","reasoning":"Fourteen-month landfill extension defers a politically costly siting fight."},{"evaluator":"nina_fischer","estimated_value_range":"$10M–$20M","reasoning":"Net benefit holds after crushing energy and transport are netted out."}],"veridian-energy-1":[{"evaluator":"elena_vasquez","estimated_value_range":"$200M–$350M","reasoning":"Dispatch data checks out; applied EPA social cost of carbon at $51/t."},{"evaluator":"amara_okonkwo","estimated_value_range":"$180M–$300M","reasoning":"Displacement is real but curtailment hours reduce the effective figure ~12%."},{"evaluator":"mei_lin","estimated_value_range":"$250M–$420M","reasoning":"Using higher EU ETS forward prices the upper bound is defensible."},{"evaluator":"daniel_roth","estimated_value_range":"$220M–$380M","reasoning":"Cross-checked with utility disclosures; middle of claimed range is credible."},{"evaluator":"lars_henriksen","estimated_value_range":"$150M–$280M","reasoning":"Counterfactual grid mix is cleaner than claimed, trimming avoided emissions."}],"veridian-energy-2":[{"evaluator":"elena_vasquez","estimated_value_range":"-$30M to -$50M","reasoning":"Catch records support the 18% decline; attribution to construction is plausible."},{"evaluator":"amara_okonkwo","estimated_value_range":"-$20M to -$40M","reasoning":"Spawning disruption is documented but warming waters share the blame."},{"evaluator":"lars_henriksen","estimated_value_range":"-$35M to -$60M","reasoning":"Including downstream processing jobs the losses run higher than claimed."},{"evaluator":"sofia_marchetti","estimated_value_range":"-$25M to -$45M","reasoning":"Comparable settlements in Danish waters anchor this range."},{"evaluator":"nina_fischer","estimated_value_range":"-$30M to -$55M","reasoning":"Two seasons of cooperative-level income data corroborate the claim."}],"veridian-energy-3":[{"evaluator":"elena_vasquez","estimated_value_range":"$55M–$90M","reasoning":"Storm logs confirm storage discharge prevented load shedding twice."},{"evaluator":"amara_okonkwo","estimated_value_range":"$40M–$75M","reasoning":"Counterfactual blackout severity is uncertain; discounting accordingly."},{"evaluator":"mei_lin","estimated_value_range":"$70M–$110M","reasoning":"Claims data from comparable outages supports the higher bound."},{"evaluator":"daniel_roth","estimated_value_range":"$50M–$85M","reasoning":"Hospitals and water treatment stayed online; real but hard to price."},{"evaluator":"lars_henriksen","estimated_value_range":"$60M–$95M","reasoning":"Frequency response data shows storage was the marginal stabilizer."}]},"evaluators":{"aisha_karim":{"username":"aisha_karim","name":"Aisha Karim","tagline":"Water and infrastructure engineer assessing watershed and grey-vs-green tradeoffs","bio":"Water and infrastructure engineer assessing watershed and grey-vs-green tradeoffs. Checks claims against monitoring and capital plans.","domains":["Nature","Climate","EBF:Carbon","EBF:Air","Governance"],"credentials":[{"title":"PE Civil Engineering","kind":"education","verified":false},{"title":"MSc Water Resources, Imperial","kind":"education","verified":false},{"title":"Municipal infrastructure advisor","kind":"experience","verified":false}],"score":83,"accuracy":84},"amara_okonkwo":{"username":"amara_okonkwo","name":"Dr. Amara Okonkwo","tagline":"Environmental economist specializing in natural-capital accounting and externality pricing","bio":"Environmental economist specializing in natural-capital accounting and externality pricing. Values conservative ranges over headline-grabbing figures.","domains":["Nature","Climate","EBF:Carbon","Finance","EBF:Air"],"credentials":[{"title":"PhD Environmental Economics, LSE","kind":"education","verified":false},{"title":"Lead, Natural Capital Coalition working group","kind":"experience","verified":false},{"title":"Author, 'Pricing the Unpriced'","kind":"publication","verified":false}],"score":92,"accuracy":91},"daniel_roth":{"username":"daniel_roth","name":"Daniel Roth","tagline":"Corporate governance and disclosure analyst","bio":"Corporate governance and disclosure analyst. Reads filings line by line; quick to flag underreporting and lock-in costs.","domains":["Governance","Finance","Climate","Education"],"credentials":[{"title":"CFA charterholder","kind":"education","verified":false},{"title":"Former equity research, sustainability sector","kind":"experience","verified":false},{"title":"Forensic accounting certificate","kind":"education","verified":false}],"score":89,"accuracy":87},"elena_vasquez":{"username":"elena_vasquez","name":"Dr. Elena Vásquez","tagline":"Climate scientist focused on attribution and the social cost of carbon","bio":"Climate scientist focused on attribution and the social cost of carbon. Former IPCC contributing author; insists every avoided-emissions claim show its counterfactual.","domains":["Nature","Climate","EBF:Carbon","Education","EBF:Air"],"credentials":[{"title":"PhD Atmospheric Science, ETH Zürich","kind":"education","verified":false},{"title":"IPCC AR6 contributing author","kind":"publication","verified":false},{"title":"15+ years climate attribution research","kind":"experience","verified":false}],"score":94,"accuracy":93},"helen_zhao":{"username":"helen_zhao","name":"Helen Zhao","tagline":"Marine and fisheries economist at a research institute","bio":"Marine and fisheries economist at a research institute. Models livelihood and ecosystem-service impacts with explicit attribution shares.","domains":["Nature","Climate","EBF:Carbon","Finance","EBF:Air"],"credentials":[{"title":"PhD Resource Economics, UBC","kind":"education","verified":false},{"title":"Fisheries valuation institute","kind":"experience","verified":false},{"title":"Ecosystem-services methodology lead","kind":"experience","verified":false}],"score":80,"accuracy":83},"kwame_asante":{"username":"kwame_asante","name":"Kwame Asante","tagline":"Fintech and financial-inclusion researcher","bio":"Fintech and financial-inclusion researcher. Evaluates fee-savings and access claims against audited transaction data.","domains":["Finance","Wellbeing","EBF:Equity","Governance"],"credentials":[{"title":"MBA Finance, INSEAD","kind":"education","verified":false},{"title":"Financial inclusion research lead","kind":"experience","verified":false},{"title":"Former central bank analyst","kind":"experience","verified":false}],"score":81,"accuracy":85},"lars_henriksen":{"username":"lars_henriksen","name":"Lars Henriksen","tagline":"Energy systems engineer with two decades in grid integration and storage","bio":"Energy systems engineer with two decades in grid integration and storage. Sceptical of avoided-cost claims that ignore curtailment.","domains":["Nature","Climate","EBF:Carbon","EBF:Air","Education"],"credentials":[{"title":"MSc Electrical Engineering, DTU","kind":"education","verified":false},{"title":"20 years grid operations & planning","kind":"experience","verified":false},{"title":"Published on storage economics","kind":"publication","verified":false}],"score":88,"accuracy":89},"marcus_webb":{"username":"marcus_webb","name":"Marcus Webb","tagline":"Investigative journalist covering corporate accountability","bio":"Investigative journalist covering corporate accountability. Brings document trails and whistleblower context; strong on governance red flags.","domains":["Governance","Wellbeing","EBF:Equity","Climate","Education"],"credentials":[{"title":"15 years investigative reporting","kind":"experience","verified":false},{"title":"Two national reporting awards","kind":"experience","verified":false},{"title":"FOIA and document-forensics work","kind":"experience","verified":false}],"score":78,"accuracy":82},"mei_lin":{"username":"mei_lin","name":"Dr. Mei Lin","tagline":"Long-term risk researcher at a nonprofit institute studying AI, governance, and tail risks","bio":"Long-term risk researcher at a nonprofit institute studying AI, governance, and tail risks. Evaluates speculative claims with explicit uncertainty bounds.","domains":["Climate","Education","Governance","Finance"],"credentials":[{"title":"PhD Decision Theory, Oxford","kind":"education","verified":false},{"title":"Director, Institute for Long-term Risk","kind":"experience","verified":false},{"title":"Advisor on AI governance frameworks","kind":"experience","verified":false}],"score":91,"accuracy":90},"nina_fischer":{"username":"nina_fischer","name":"Nina Fischer","tagline":"Education policy researcher focused on long-run human-capital outcomes","bio":"Education policy researcher focused on long-run human-capital outcomes. Wary of fade-out; favors cohort-tracked evidence.","domains":["Wellbeing","EBF:Equity","Climate","Education","Nature","EBF:Air"],"credentials":[{"title":"PhD Education Policy, Stanford","kind":"education","verified":false},{"title":"Longitudinal learning-outcomes studies","kind":"experience","verified":false},{"title":"Former state assessment director","kind":"experience","verified":false}],"score":85,"accuracy":86},"owen_pearce":{"username":"owen_pearce","name":"Owen Pearce","tagline":"Open-data advocate and civic technologist","bio":"Open-data advocate and civic technologist. Evaluates transparency, data-governance, and lock-in claims; cautious on speculative valuations.","domains":["Governance","Climate","Education","Finance"],"credentials":[{"title":"Civic-tech contributor","kind":"experience","verified":false},{"title":"Open-data standards working group","kind":"experience","verified":false},{"title":"Self-taught data analyst","kind":"experience","verified":false}],"score":70,"accuracy":77},"priya_raghavan":{"username":"priya_raghavan","name":"Priya Raghavan","tagline":"Development economist working on rural livelihoods and program evaluation","bio":"Development economist working on rural livelihoods and program evaluation. Triangulates every claim against household survey data.","domains":["Wellbeing","EBF:Equity","Finance","Governance"],"credentials":[{"title":"MPA International Development, Princeton","kind":"education","verified":false},{"title":"10 years with rural development RCTs","kind":"experience","verified":false},{"title":"J-PAL affiliated researcher","kind":"experience","verified":false}],"score":90,"accuracy":90},"robert_maguire":{"username":"robert_maguire","name":"Robert Maguire","tagline":"Labor rights organizer evaluating worker-safety and livelihood claims from the ground","bio":"Labor rights organizer evaluating worker-safety and livelihood claims from the ground. Surfaces underreporting and temp-worker exposure.","domains":["Wellbeing","EBF:Equity","Governance","Finance"],"credentials":[{"title":"20 years union organizing","kind":"experience","verified":false},{"title":"Occupational safety trainer","kind":"experience","verified":false},{"title":"Community labor research","kind":"experience","verified":false}],"score":72,"accuracy":79},"sofia_marchetti":{"username":"sofia_marchetti","name":"Dr. Sofia Marchetti","tagline":"Public health researcher quantifying environmental health co-benefits","bio":"Public health researcher quantifying environmental health co-benefits. Pairs epidemiological data with monitored exposure before endorsing a figure.","domains":["Wellbeing","EBF:Equity","Nature","EBF:Air","Climate","EBF:Carbon"],"credentials":[{"title":"MD/PhD Epidemiology, Johns Hopkins","kind":"education","verified":false},{"title":"WHO air-quality advisory panel","kind":"experience","verified":false},{"title":"Health-impact assessment specialist","kind":"experience","verified":false}],"score":86,"accuracy":88},"tomas_nkemelu":{"username":"tomas_nkemelu","name":"Tomas Nkemelu","tagline":"Agricultural scientist working on smallholder resilience and yield trials","bio":"Agricultural scientist working on smallholder resilience and yield trials. Grounds claims in field data and adoption rates.","domains":["Nature","Climate","EBF:Carbon","Wellbeing","EBF:Equity","Finance"],"credentials":[{"title":"PhD Agronomy, Wageningen","kind":"education","verified":false},{"title":"CGIAR drought-resilience program","kind":"experience","verified":false},{"title":"Field trials across East Africa","kind":"experience","verified":false}],"score":84,"accuracy":85}},"stats":{"claims":30,"ratings":150,"evaluators":15}};
+
+/* ---------- CONTACT LINKS — SWAP THESE PLACEHOLDERS ----------
+   book:     your Calendly / booking URL
+   telegram: your Telegram handle URL
+   mail:     already real                                        */
+var CONTACT = {
+  book: 'https://calendly.com/YOUR-HANDLE/30min',
+  telegram: 'https://t.me/YOUR-HANDLE',
+  mail: 'mailto:email@genesis.re?subject=BaseX%20%E2%80%94%20let%27s%20WIN%20WIN%20WIN'
+};
+var ICON_PHONE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+var ICON_TG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+var ICON_MAIL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>';
+
+/* ---------- tiny helpers ---------- */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function $(sel){return document.querySelector(sel)}
+function tagHtml(t){var cls=t.indexOf('EBF:')===0?'tag-ebf':'tag-cat';return '<span class="tag '+cls+'">'+esc(t)+'</span>'}
+function tagsHtml(tags,max){var out='';var n=max||tags.length;for(var i=0;i<Math.min(tags.length,n);i++)out+=tagHtml(tags[i]);if(tags.length>n)out+='<span class="tag" style="border:1px solid var(--border);color:var(--fg-muted)">+'+(tags.length-n)+'</span>';return out}
+
+/* ---------- consensus math (ported from lib/estimate.js) ---------- */
+function parseRange(s){
+  if(!s)return null;
+  var m=[],re=/(-?)\s*\$\s*(\d+(?:\.\d+)?)\s*(k|m|b|t)?/gi,x;
+  var mult={k:1e3,m:1e6,b:1e9,t:1e12};
+  while((x=re.exec(s))!==null){m.push((x[1]==='-'?-1:1)*parseFloat(x[2])*(mult[(x[3]||'').toLowerCase()]||1))}
+  if(!m.length)return null;
+  var lo=Math.min.apply(null,m),hi=Math.max.apply(null,m);
+  return{lo:lo,hi:hi,mid:(lo+hi)/2}
+}
+function money(n){
+  var sign=n<0?'-':'';var a=Math.abs(n);var v,suf;
+  if(a>=1e12){v=a/1e12;suf='T'}else if(a>=1e9){v=a/1e9;suf='B'}else if(a>=1e6){v=a/1e6;suf='M'}else if(a>=1e3){v=a/1e3;suf='K'}else{v=a;suf=''}
+  v=Math.round(v*10)/10;
+  return sign+'$'+(v%1===0?v.toFixed(0):v.toFixed(1))+suf
+}
+function consensus(slug){
+  var rs=(DATA.ratings[slug]||[]).map(function(r){return parseRange(r.estimated_value_range)}).filter(Boolean);
+  if(rs.length<3)return null;
+  rs.sort(function(a,b){return a.mid-b.mid});
+  rs=rs.slice(1,-1); /* drop single lowest + single highest */
+  var lo=0,hi=0;for(var i=0;i<rs.length;i++){lo+=rs[i].lo;hi+=rs[i].hi}
+  return{band:money(lo/rs.length)+'–'+money(hi/rs.length),used:rs.length,total:rs.length+2}
+}
+
+/* ---------- modal ---------- */
+var lastFocus=null;
+function openModal(kind){
+  lastFocus=document.activeElement;
+  var t=$('#m-title'),b=$('#m-body'),a=$('#m-acts'),mk=$('#m-mark');
+  if(kind==='join'){
+    mk.textContent='🤝';
+    t.textContent='You clicked Login / Register — we think that means you should join us :)';
+    b.textContent='BaseX is being built in the open with early partners. Book a 30-minute slot and let\u2019s see how we WIN WIN WIN \u2014 or ping us wherever you like. Three doors, same welcome.';
+    a.innerHTML='<a class="btn btn-primary" href="'+CONTACT.book+'" target="_blank" rel="noopener">'+ICON_PHONE+'Book 30 minutes</a>'
+      +'<a class="btn btn-ghost" href="'+CONTACT.telegram+'" target="_blank" rel="noopener">'+ICON_TG+'Telegram</a>'
+      +'<a class="btn btn-ghost" href="'+CONTACT.mail+'">'+ICON_MAIL+'Email us</a>'
+      +'<button class="btn btn-ghost" data-action="close" type="button">Just exploring</button>';
+  }else{
+    mk.textContent='🌱';
+    t.textContent='This is a clickable demo';
+    b.textContent='You\u2019re exploring a preview of BaseX with sample data \u2014 nothing here is live yet. We\u2019re working towards onboarding partners who are interested in using the product. We\u2019re not selling anything. We\u2019re presenting a vision: impact, honestly priced \u2014 a step towards planetary unity.';
+    a.innerHTML='<button class="btn btn-primary" data-action="close" type="button">Keep exploring</button>';
+  }
+  $('#overlay').classList.add('on');
+  $('#modal').focus();
+}
+function closeModal(){
+  $('#overlay').classList.remove('on');
+  if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+
+/* ---------- renderers ---------- */
+function statusTag(st){
+  return st==='consensus_reached'
+    ?'<span class="tag tag-status-r">consensus reached</span>'
+    :'<span class="tag tag-status-p">pending consensus</span>'
+}
+function feedRow(c,i){
+  return '<a class="row" href="#/claim/'+esc(c.slug)+'">'
+    +'<span class="cell"><span class="cid">#'+(i+1)+'</span><span class="ctitle">'+esc(c.text.length>85?c.text.slice(0,85)+'\u2026':c.text)+'</span></span>'
+    +'<span class="cell cell-tags" data-l="Category">'+tagsHtml(c.tags,2)+'</span>'
+    +'<span class="cell" data-l="Value"><span class="val">'+esc(c.range||'\u2014')+'</span></span>'
+    +'<span class="cell" data-l="Evals"><span class="mono-s muted">'+c.nRatings+'</span></span>'
+    +'<span class="cell" data-l="Status">'+statusTag(c.status)+'</span>'
+    +'<span class="cell" data-l="Filed"><span class="mono-s muted">'+esc(c.agoLabel)+'</span></span>'
+    +'</a>'
+}
+function pageHome(){
+  var rows='';for(var i=0;i<DATA.claims.length;i++)rows+=feedRow(DATA.claims[i],i);
+  return '<section class="hero"><div class="wrap">'
+    +'<h1>Evaluate Impact.<br><span class="accent">Prove Value.</span></h1>'
+    +'<p>Permissionless claim submission. Independent evaluations. A real, challengeable consensus on what impact is worth \u2014 positive and negative.</p>'
+    +'<div class="stats"><span class="chip">'+DATA.stats.claims+' claims</span><span class="chip">'+DATA.stats.ratings+' evaluations</span><span class="chip">'+DATA.stats.evaluators+' evaluators</span><span class="chip">sample data</span></div>'
+    +'<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-primary" href="#/submit">Submit a Claim</a><a class="btn btn-ghost" href="#feedtop">Browse Feed</a></div>'
+    +'</div></section>'
+    +'<section class="section" id="feedtop"><h2 class="sec-title">Claims Feed</h2>'
+    +'<div class="table"><div class="thead"><span>Claim</span><span>Category</span><span>Value Range</span><span>Evals</span><span>Status</span><span>Filed</span></div>'
+    +rows+'</div></section>'
+}
+function pageClaim(slug){
+  var c=null;for(var i=0;i<DATA.claims.length;i++)if(DATA.claims[i].slug===slug)c=DATA.claims[i];
+  if(!c)return pageHome();
+  var out='<a class="crumb" href="#/">\u2190 Back to feed</a>'
+    +'<div class="claim-h">'+tagsHtml(c.tags)+statusTag(c.status)+'<span class="tag" style="border:1px dashed var(--amber);color:var(--amber)">demo data</span></div>'
+    +'<h1 class="claim-title">'+esc(c.text)+'</h1>'
+    +'<div class="claim-meta"><span>Filed by <b>'+esc(c.by)+'</b></span><span>'+esc(c.agoLabel)+'</span><span>About <a href="#/entity/'+c.entityIdx+'">'+esc(c.entity)+'</a></span>'+(c.range?'<span>Claimed: <b class="val">'+esc(c.range)+'</b></span>':'')+'</div>';
+  var rs=DATA.ratings[c.slug]||[];
+  if(c.status==='consensus_reached'){
+    var cons=consensus(c.slug);
+    out+='<div class="consensus"><span class="lbl">Community consensus</span>'
+      +'<span class="band">'+(cons?cons.band:'\u2014')+'</span>'
+      +'<div class="sub">'+(cons?cons.used+' of '+cons.total+' independent estimates \u00b7 top and bottom trimmed \u00b7 ':'')+esc(c.baseline||'')+'</div></div>';
+    out+='<h2 class="sec-title">Community Evaluations ('+rs.length+')</h2>';
+    for(var j=0;j<rs.length;j++){
+      var r=rs[j],ev=DATA.evaluators[r.evaluator];
+      out+='<div class="ecard"><div class="ecard-h"><span class="eauthor">'+(ev?'<a href="#/evaluator/'+esc(r.evaluator)+'">'+esc(ev.name)+'</a>':esc(r.evaluator))+'</span><span class="erange">'+esc(r.estimated_value_range)+'</span></div>'
+        +(r.reasoning?'<p class="ereason">'+esc(r.reasoning)+'</p>':'')+'</div>';
+    }
+  }else{
+    out+='<div class="blind"><div class="lock">\ud83d\udd12</div>'
+      +'<p><b>'+rs.length+' independent evaluations committed \u2014 hidden until you add yours.</b><br>'
+      +'Commit-reveal keeps estimates independent: nobody anchors on the crowd. In the live product, submitting your own evaluation reveals the others.</p></div>';
+  }
+  out+='<h2 class="sec-title">Evaluate this claim</h2>'
+    +'<div class="formcard"><div class="note">\u2697 Give your estimate either way \u2014 in plain words, or as numbers. Fill either side.</div>'
+    +'<form data-demo="1"><div class="dual">'
+    +'<div class="pane"><span class="pane-t">In your own words</span><textarea rows="4" placeholder="e.g. Probably $50\u2013100M, but only if the pilot scales \u2014 I\u2019m maybe 50/50 on that."></textarea></div>'
+    +'<div class="orsep">or</div>'
+    +'<div class="pane"><span class="pane-t">As numbers</span><div class="threes">'
+    +'<div><label>Low ($M)</label><input type="number" placeholder="50"></div>'
+    +'<div><label>Most likely ($M)</label><input type="number" placeholder="75"></div>'
+    +'<div><label>High ($M)</label><input type="number" placeholder="100"></div></div>'
+    +'<div style="margin-top:10px"><label>Confidence</label><div class="conf"><input type="range" min="0" max="100" value="60" oninput="this.nextElementSibling.value=this.value+\'%\'"><output>60%</output></div></div>'
+    +'</div></div>'
+    +'<button class="btn btn-primary" type="submit">Submit Evaluation</button></form></div>'
+    +'<h2 class="sec-title">Challenge this claim</h2>'
+    +'<div class="formcard"><form data-demo="1"><div class="fgroup"><label>Dispute with reasoning</label><textarea rows="3" placeholder="What\u2019s wrong with this claim? Provide specific evidence."></textarea></div>'
+    +'<button class="btn btn-ghost" type="submit">Challenge Claim</button></form></div>';
+  return out
+}
+function pageEntities(){
+  var rows='';
+  for(var i=0;i<DATA.entities.length;i++){var e=DATA.entities[i];
+    rows+='<a class="row" href="#/entity/'+i+'">'
+      +'<span class="cell"><span class="ctitle" style="font-family:var(--mono);font-weight:700">'+esc(e.name)+'</span></span>'
+      +'<span class="cell" data-l="Type"><span class="mono-s muted">'+esc(e.type)+'</span></span>'
+      +'<span class="cell" data-l="Sector"><span class="mono-s muted">'+esc(e.sector)+'</span></span>'
+      +'<span class="cell" data-l="Claims"><span class="mono-s">'+e.claims.length+'</span></span></a>'
+  }
+  return '<section class="section"><h2 class="sec-title">Entities</h2><div class="table simple"><div class="thead"><span>Name</span><span>Type</span><span>Sector</span><span>Claims</span></div>'+rows+'</div></section>'
+}
+function pageEntity(idx){
+  var e=DATA.entities[idx];if(!e)return pageEntities();
+  var out='<a class="crumb" href="#/entities">\u2190 All entities</a>'
+    +'<div class="profile-head"><h2>'+esc(e.name)+'</h2><p class="tagline">'+esc(e.type)+' \u00b7 '+esc(e.sector)+'</p><p style="font-size:.88rem;color:var(--fg-dim)">'+esc(e.desc)+'</p></div>'
+    +'<h2 class="sec-title">Claims about this entity</h2>';
+  var rows='',n=0;
+  for(var i=0;i<DATA.claims.length;i++){if(DATA.claims[i].entityIdx===idx){rows+=feedRow(DATA.claims[i],i);n++}}
+  return out+'<div class="table"><div class="thead"><span>Claim</span><span>Category</span><span>Value Range</span><span>Evals</span><span>Status</span><span>Filed</span></div>'+rows+'</div>'
+}
+function pageEvaluators(){
+  var evs=[];for(var k in DATA.evaluators)evs.push(DATA.evaluators[k]);
+  evs.sort(function(a,b){return b.score-a.score});
+  var rows='';
+  for(var i=0;i<evs.length;i++){var e=evs[i];
+    rows+='<a class="row" href="#/evaluator/'+esc(e.username)+'">'
+      +'<span class="cell"><span class="cid">'+(i+1)+'</span></span>'
+      +'<span class="cell"><span class="ctitle" style="font-weight:600">'+esc(e.name)+'</span></span>'
+      +'<span class="cell" data-l="Reputation"><span class="repbar"><i style="width:'+e.score+'%"></i></span><span class="mono-s" style="color:var(--green)">'+e.score+'</span></span>'
+      +'<span class="cell" data-l="Accuracy"><span class="mono-s muted">'+e.accuracy+'%</span></span>'
+      +'<span class="cell" data-l="Domains"><span class="mono-s muted">'+e.domains.length+'</span></span></a>'
+  }
+  return '<section class="section"><h2 class="sec-title">Evaluators</h2><p style="font-size:.85rem;color:var(--fg-dim);margin-bottom:14px">Community analysts building track records \u2014 reputation is earned through accuracy, and every credential is challengeable.</p>'
+    +'<div class="table evrow"><div class="thead"><span>#</span><span>Name</span><span>Reputation</span><span>Accuracy</span><span>Domains</span></div>'+rows+'</div></section>'
+}
+function pageEvaluator(username){
+  var e=DATA.evaluators[username];if(!e)return pageEvaluators();
+  var out='<a class="crumb" href="#/evaluators">\u2190 All evaluators</a>'
+    +'<div class="profile-head"><h2>'+esc(e.name)+'</h2><p class="tagline">'+esc(e.tagline)+'</p>'
+    +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">'+tagsHtml(e.domains)+'</div>'
+    +'<p style="font-size:.86rem;color:var(--fg-dim)">'+esc(e.bio)+'</p></div>'
+    +'<div class="stats"><span class="chip">reputation '+e.score+'</span><span class="chip">accuracy '+e.accuracy+'%</span></div>'
+    +'<h2 class="sec-title" style="margin-top:22px">Credentials</h2><p style="font-size:.76rem;color:var(--fg-muted);margin-bottom:8px">Self-declared \u2014 and, like everything on BaseX, challengeable.</p><div class="creds formcard">';
+  for(var i=0;i<e.credentials.length;i++){var c=e.credentials[i];
+    out+='<div class="cred"><span style="color:var(--green)">\u2713</span><span>'+esc(c.title)+'</span><span class="k">'+esc(c.kind||'experience')+'</span><span class="sd">self-declared</span></div>'
+  }
+  out+='</div><h2 class="sec-title">Their evaluations</h2>';
+  var n=0;
+  for(var s in DATA.ratings){
+    var rs=DATA.ratings[s];
+    for(var j=0;j<rs.length;j++){
+      if(rs[j].evaluator===username&&n<6){
+        var claim=null;for(var q=0;q<DATA.claims.length;q++)if(DATA.claims[q].slug===s)claim=DATA.claims[q];
+        if(claim&&claim.status==='consensus_reached'){
+          out+='<div class="ecard"><div class="ecard-h"><span class="eauthor"><a href="#/claim/'+esc(s)+'">'+esc(claim.text.slice(0,90))+'\u2026</a></span><span class="erange">'+esc(rs[j].estimated_value_range)+'</span></div></div>';n++
+        }
+      }
+    }
+  }
+  return out
+}
+function pageSubmit(){
+  var tags=['EBF:Air','EBF:Water','EBF:Soil','EBF:Biodiversity','EBF:Carbon','EBF:Equity','Climate','Nature','Governance','Education','Healthcare','Finance','Wellbeing','karma and good vibes'];
+  var picks='';for(var i=0;i<tags.length;i++)picks+='<label class="pick-l"><input type="checkbox"> '+esc(tags[i])+'</label>';
+  return '<section class="section"><h2 class="sec-title">Submit a Claim</h2>'
+    +'<p style="font-size:.88rem;color:var(--fg-dim);margin-bottom:16px">Permissionless \u2014 every claim is evaluated by the community. No gatekeeping.</p>'
+    +'<div class="formcard"><form data-demo="1">'
+    +'<div class="fgroup"><label>Claim</label><textarea rows="4" placeholder="Describe what happened, who is responsible, and what the impact was. Be specific."></textarea></div>'
+    +'<div class="fgroup"><label>Impact tags</label><div class="pick">'+picks+'</div></div>'
+    +'<div class="note">\u2697 We\u2019re in the initial phases of data input \u2014 give the value in plain words or as numbers, whichever feels natural.</div>'
+    +'<div class="dual">'
+    +'<div class="pane"><span class="pane-t">In your own words</span><textarea rows="4" placeholder="e.g. Around $200\u2013400M in avoided carbon cost over ~20 years, maybe 60% confident."></textarea></div>'
+    +'<div class="orsep">or</div>'
+    +'<div class="pane"><span class="pane-t">As numbers</span><div class="threes">'
+    +'<div><label>Low ($M)</label><input type="number" placeholder="180"></div>'
+    +'<div><label>Most likely ($M)</label><input type="number" placeholder="300"></div>'
+    +'<div><label>High ($M)</label><input type="number" placeholder="420"></div></div></div>'
+    +'</div>'
+    +'<button class="btn btn-primary" type="submit">Submit Claim</button></form></div></section>'
+}
+function pageDocs(){
+  var steps=[['1','Submit your claim \u2014 permissionless, no approval needed.'],
+    ['2','Community evaluates. Once 5+ evaluations are in, a 1-week cooling period starts.'],
+    ['3','After cooling: top and bottom estimates trimmed, the rest confidence-weighted \u2192 a consensus value band.'],
+    ['4','Any claim or evaluation can be challenged at any time. Disputes are visible and contestable.']];
+  var docs=[['Design Debate & Vision','Why BaseX is price discovery for impact \u2014 the full thinking process.'],
+    ['What makes it unique','Commit-reveal, harms as first-class, consensus math, the karma ledger.'],
+    ['Ecosystem fit','EBF \u00b7 Hypercerts \u00b7 Karma GAP \u00b7 grant programmes \u2014 one stack.'],
+    ['Sales pitch','A credible price for impact \u2014 who needs it and why now.']];
+  var out='<section class="section"><h2 class="sec-title">How consensus works</h2>';
+  for(var i=0;i<steps.length;i++)out+='<div class="step"><b>'+steps[i][0]+'</b><span>'+steps[i][1]+'</span></div>';
+  out+='<h2 class="sec-title" style="margin-top:26px">Design library</h2><p style="font-size:.8rem;color:var(--fg-dim);margin-bottom:12px">Our design decisions and thinking process, in the open \u2014 the same visible, challengeable work we ask of every claim.</p>';
+  for(var j=0;j<docs.length;j++)out+='<span class="doccard" data-action="demo" tabindex="0" role="button"><b>'+docs[j][0]+'</b><span>'+docs[j][1]+'</span></span>';
+  return out+'</section>'
+}
+
+/* ---------- router ---------- */
+function route(){
+  var h=location.hash||'#/';
+  var app=$('#app');
+  var m;
+  if(h==='#/'||h==='')app.innerHTML=pageHome();
+  else if((m=h.match(/^#\/claim\/(.+)$/)))app.innerHTML=pageClaim(decodeURIComponent(m[1]));
+  else if(h==='#/entities')app.innerHTML=pageEntities();
+  else if((m=h.match(/^#\/entity\/(\d+)$/)))app.innerHTML=pageEntity(parseInt(m[1],10));
+  else if(h==='#/evaluators')app.innerHTML=pageEvaluators();
+  else if((m=h.match(/^#\/evaluator\/(.+)$/)))app.innerHTML=pageEvaluator(decodeURIComponent(m[1]));
+  else if(h==='#/submit')app.innerHTML=pageSubmit();
+  else if(h==='#/docs')app.innerHTML=pageDocs();
+  else if(h==='#feedtop'){ /* in-page anchor on home */ if(!$('#feedtop'))app.innerHTML=pageHome(); var el=$('#feedtop');if(el)el.scrollIntoView(); return }
+  else app.innerHTML=pageHome();
+  /* First paint keeps the intro on screen; later navigations jump straight
+     past it ('instant' beats the html scroll-behavior:smooth rule). */
+  if(h!=='#feedtop'&&booted){var nav=document.querySelector('.nav');if(nav)nav.scrollIntoView({behavior:'instant'})}
+  booted=true;
+}
+var booted=false;
+window.addEventListener('hashchange',route);
+
+/* ---------- global click handling: nothing dead-ends ---------- */
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest('[data-action]');
+  if(el){
+    var act=el.getAttribute('data-action');
+    if(act==='join'){ev.preventDefault();openModal('join');return}
+    if(act==='close'){ev.preventDefault();closeModal();return}
+    if(act==='scroll'){ev.preventDefault();var nv=document.querySelector('.nav');if(nv)nv.scrollIntoView({behavior:'smooth'});return}
+    if(act==='demo'||act==='peace'){ev.preventDefault();openModal('demo');return}
+  }
+  if(ev.target===$('#overlay'))closeModal();
+});
+document.addEventListener('submit',function(ev){
+  var f=ev.target.closest('form[data-demo]');
+  if(f){ev.preventDefault();openModal('demo')}
+});
+document.addEventListener('keydown',function(ev){
+  if(ev.key==='Escape'&&$('#overlay').classList.contains('on'))closeModal();
+  if((ev.key==='Enter'||ev.key===' ')&&ev.target.getAttribute&&ev.target.getAttribute('data-action')==='demo'){ev.preventDefault();openModal('demo')}
+});
+
+route();
+</script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<!--
+  BaseX — one-pager invitation to XPRIZE Carbon Removal participants.
+  Fully self-contained: no fonts, no CDN, no images, no network requests.
+  Open from disk, attach to an email, or host anywhere as-is.
+  Contact: the mailto button below. Not affiliated with XPRIZE or the Musk Foundation.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>To the carbon removal pioneers — an invitation from BaseX</title>
+<meta name="description" content="You proved the tonnes. Let's price everything else your projects give the planet — an invitation to XPRIZE Carbon Removal participants.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23F6FAF2'/%3E%3Cpath d='M16 5l8 5v10l-8 5-8-5V10z' fill='%232338d6'/%3E%3Cpath d='M16 5l8 5-8 5-8-5z' fill='%233b5bff'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F6FAF2;--bg-2:#E9F4E1;--card:#FFFFFF;
+  --fg:#1E3A2A;--fg-dim:#47664F;--fg-muted:#7C947F;
+  --green:#1E9E53;--green-dim:#147A3D;--green-glow:rgba(30,158,83,.10);
+  --amber:#D97706;--amber-bright:#F59E0B;--amber-glow:rgba(245,158,11,.16);
+  --border:#D9E8CF;--border-b:#A9CE9B;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 clamp(16px,5vw,40px)}
+.top{font-family:var(--mono);font-size:.74rem;text-align:center;padding:8px 12px;background:var(--fg);color:#F6FAF2}
+header{padding:56px 0 40px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.3;pointer-events:none}
+header::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 40%,rgba(30,158,83,.2) 0%,transparent 60%);pointer-events:none}
+header .wrap{position:relative;z-index:1}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;font-size:1rem;margin-bottom:34px}
+.kicker{font-family:var(--mono);font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+h1{font-family:var(--mono);font-size:clamp(1.6rem,4.6vw,2.6rem);line-height:1.18;letter-spacing:-.03em;margin-bottom:18px}
+h1 .accent{color:var(--green)}
+.lede{font-size:1.02rem;color:var(--fg-dim);max-width:56ch}
+section{padding:36px 0 8px}
+h2{font-family:var(--mono);font-size:.95rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+p{margin-bottom:16px;color:var(--fg-dim)}
+p b,p strong{color:var(--fg)}
+.benefits{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.chip{font-family:var(--mono);font-size:.76rem;font-weight:700;background:rgba(30,158,83,.1);border:1px solid rgba(30,158,83,.3);color:var(--green-dim);border-radius:999px;padding:6px 14px}
+.chip.amber{background:var(--amber-glow);border-color:rgba(245,158,11,.4);color:var(--amber)}
+.invite{background:var(--card);border:2px solid var(--amber-bright);border-radius:12px;padding:clamp(22px,4vw,34px);margin:30px 0;text-align:center;box-shadow:0 10px 34px rgba(30,58,42,.08)}
+.invite h2{color:var(--amber);margin-bottom:10px}
+.invite p{max-width:52ch;margin:0 auto 20px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 30px;border-radius:4px;font-family:var(--mono);font-size:.9rem;font-weight:700;background:var(--amber-bright);color:#1E3A2A;text-decoration:none;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px);background:var(--amber)}
+.sub{display:block;margin-top:12px;font-size:.78rem;color:var(--fg-muted)}
+.sub a{color:var(--green)}
+.why{border-left:3px solid var(--green-dim);background:var(--green-glow);padding:16px 20px;border-radius:0 6px 6px 0;margin:8px 0 26px;font-size:.95rem;color:var(--fg-dim)}
+footer{border-top:1px solid var(--border);margin-top:34px;padding:24px 0 44px}
+footer p{font-family:var(--mono);font-size:.72rem;color:var(--fg-muted);line-height:1.8;margin:0}
+a{color:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="top">🌱 An open invitation — from BaseX to the carbon removal community</div>
+
+<header><div class="wrap">
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l9 5.5v13L16 28l-9-5.5v-13z" fill="#2338d6"/><path d="M16 4l9 5.5-9 5.5-9-5.5z" fill="#3b5bff"/><path d="M16 15v13l-9-5.5v-13z" fill="#1b2aa8"/></svg>
+    BaseX
+  </div>
+  <div class="kicker">To the teams of XPRIZE Carbon Removal</div>
+  <h1>You proved the tonnes.<br><span class="accent">Now let's price everything else.</span></h1>
+  <p class="lede">A $100&nbsp;million prize backed by the Musk Foundation showed the world that
+  megaton carbon removal is real — 1,300+ teams, working demonstrations, gigaton ambitions.
+  The tonne got its market. But a tonne was never the whole story.</p>
+</div></header>
+
+<main class="wrap">
+
+<section>
+  <h2>The value your projects create beyond carbon</h2>
+  <p>A restored forest doesn't just draw down CO₂. It cleans the <b>air</b>. It casts
+  <b>shade</b> that cools streets and crops. It shelters <b>biodiversity</b> and feeds
+  <b>pollinators</b>. It holds <b>water</b> in the land — retention against drought, buffering
+  against flood. It rebuilds <b>living soil</b> instead of depleting it. It cuts agricultural
+  <b>runoff</b>, which means fewer <b>dead zones</b> downstream.</p>
+  <p>Every one of those is real value, delivered to real people.
+  And today, almost all of it is priced at exactly <b>zero</b>.</p>
+  <div class="benefits">
+    <span class="chip amber">EBF:Carbon</span>
+    <span class="chip">EBF:Air</span>
+    <span class="chip">EBF:Water</span>
+    <span class="chip">EBF:Soil</span>
+    <span class="chip">EBF:Biodiversity</span>
+    <span class="chip">EBF:Equity</span>
+  </div>
+  <p style="font-size:.8rem;color:var(--fg-muted)">BaseX tags impact with the six Ecological
+  Benefits (EBF) — so co-benefits are named, claimed, and valued, not lost as a footnote.</p>
+</section>
+
+<section>
+  <h2>What BaseX does</h2>
+  <p><b>BaseX is price discovery for impact.</b> Your project files a claim — carbon <i>and</i>
+  co-benefits. Independent evaluators estimate its dollar value. A trimmed, confidence-weighted
+  consensus emerges: one honest, challengeable number, with the uncertainty kept visible.
+  Like a market price — except it counts what markets have been leaving out.</p>
+</section>
+
+<div class="invite">
+  <h2>★ Our invitation to partnership ★</h2>
+  <p>Be one of the first carbon-removal projects whose <b>full</b> planetary value is on the
+  record. Your data, our evaluation engine, an open ledger of what your work is really worth.
+  We are not selling anything — we are presenting a vision of planetary unity, and we would
+  like to build it with you.</p>
+  <p class="charge">We're going to price the whole of nature's work — one way or another. We'd
+  simply rather you were in the frame when the first full-value ledger goes on the record.
+  <b>You're part of the game.</b></p>
+  <a class="btn" href="mailto:email@genesis.re?subject=Carbon%20removal%20co-benefits%20%E2%80%94%20let%27s%20partner">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+    Start the conversation
+  </a>
+  <span class="sub">Curious first? <a href="basex-demo.html">Explore the clickable demo</a> — one file, sample data, real consensus math.</span>
+</div>
+
+<section>
+  <div class="why">
+    <b>Why we do this:</b> because we live in the era of post-singularity AI. When intelligence
+    becomes abundant, honesty about value can finally become abundant too. Pricing the whole
+    of nature's work — not just the tradable slice — is how abundance becomes regeneration.
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <p>BaseX — permissionless impact evaluation · greatly inspired by the regenerative renaissance.<br>
+  Independent initiative — not affiliated with XPRIZE or the Musk Foundation.</p>
+</div></footer>
+
+</body>
+</html>
