@@ -180,6 +180,13 @@ textarea{resize:vertical}
 .modal h3{font-family:var(--mono);font-size:1.02rem;line-height:1.4;margin-bottom:10px}
 .modal p{font-size:.88rem;color:var(--fg-dim);margin-bottom:18px}
 .modal .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* partner CTA — the one REAL action on the page */
+.partner-cta{background:var(--fg);color:#F6FAF2;padding:56px 0;margin-top:44px;text-align:center}
+.partner-cta .kicker{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-bright);display:block;margin-bottom:14px}
+.partner-cta h2{font-family:var(--mono);font-size:clamp(1.4rem,3.6vw,2.2rem);line-height:1.25;letter-spacing:-.02em;margin-bottom:16px}
+.partner-cta p{font-size:.95rem;color:#CDE3D2;max-width:56ch;margin:0 auto 26px;line-height:1.7}
+.partner-cta .btn{font-size:.92rem;padding:15px 32px}
+.partner-cta .sub{display:block;margin-top:14px;font-family:var(--mono);font-size:.72rem;color:#9DBCA6}
 /* footer */
 footer{border-top:1px solid var(--border);padding:26px 0 40px;margin-top:20px}
 footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-height:1.8}
@@ -249,6 +256,20 @@ footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-hei
 </div></nav>
 
 <main id="app" class="wrap"></main>
+
+<section class="partner-cta"><div class="wrap">
+  <span class="kicker">Partner with us — the one real button on this page</span>
+  <h2>We create the new source of reality.</h2>
+  <p>Our whole focus right now is onboarding the first partners. Bring your impact data in
+  <b>any format</b> — a spreadsheet, a PDF, a link, a story told out loud — and we'll shape it
+  into claims, evaluations, and an honest price together. Early partners decide the best
+  approach with us, in public.</p>
+  <a class="btn btn-primary" href="mailto:email@genesis.re?subject=BaseX%20founding%20partner">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+    Become a founding partner
+  </a>
+  <span class="sub">email@genesis.re · any format · zero polish required</span>
+</div></section>
 
 <footer><div class="wrap">
   <p>BaseX — permissionless impact evaluation · demo preview.<br>
