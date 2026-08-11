@@ -36,6 +36,22 @@ body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.
 a{color:var(--green);text-decoration:none}
 a:hover{color:var(--amber)}
 .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(14px,4vw,40px)}
+/* welcome popup — first thing in the DOM; its frame draws itself clockwise
+   from the upper-left, then three paragraphs fade in */
+.welcome-overlay{position:fixed;inset:0;background:rgba(20,40,28,.55);display:flex;align-items:center;justify-content:center;z-index:120;padding:18px;transition:opacity .35s}
+.welcome-overlay.gone{opacity:0;pointer-events:none}
+.welcome{position:relative;background:var(--card);max-width:540px;width:100%;padding:clamp(26px,5vw,40px);text-align:left}
+.welcome .frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.welcome .frame rect{fill:none;stroke:var(--green);stroke-width:2.5;vector-effect:non-scaling-stroke;stroke-dasharray:400;stroke-dashoffset:400;animation:drawframe 1.5s ease-out forwards}
+@keyframes drawframe{to{stroke-dashoffset:0}}
+.w-kicker{display:block;font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:14px;opacity:0;animation:wfade .5s ease .3s forwards}
+.welcome p{font-size:.92rem;line-height:1.7;color:var(--fg-dim);margin-bottom:14px;opacity:0}
+.welcome p b{color:var(--fg)}
+.welcome p:nth-of-type(1){animation:wfade .55s ease .45s forwards}
+.welcome p:nth-of-type(2){animation:wfade .55s ease .85s forwards}
+.welcome p:nth-of-type(3){animation:wfade .55s ease 1.25s forwards}
+.welcome .btn{margin-top:8px;opacity:0;animation:wfade .5s ease 1.6s forwards}
+@keyframes wfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 /* banner */
 .demo-banner{background:var(--fg);color:#F6FAF2;font-family:var(--mono);font-size:.76rem;text-align:center;padding:7px 12px;letter-spacing:.02em}
 /* intro / opening screen */
@@ -204,6 +220,21 @@ footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-hei
 </style>
 </head>
 <body>
+
+<div class="welcome-overlay" id="welcome" role="dialog" aria-modal="true" aria-label="Welcome to the BaseX clickable demo">
+  <div class="welcome">
+    <svg class="frame" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="396" height="296" pathLength="400"/></svg>
+    <span class="w-kicker">BaseX — clickable demo</span>
+    <p><b>This is a clickable demo</b> with sample data — nothing here is live yet. We're showing
+    it around to ask the community one question: what's the best data structure for honestly
+    pricing impact?</p>
+    <p><b>Work in progress, built in public.</b> Every improvement ships the day it's made, and
+    the whole thinking process — design decisions, references, doubts — is out in the open.</p>
+    <p><b>We're experimenting and building together.</b> With partners, with communities, with
+    you. If something feels wrong, that's a contribution: tell us.</p>
+    <button class="btn btn-primary" data-action="welcome-close" type="button">Enter the demo →</button>
+  </div>
+</div>
 
 <div class="demo-banner">🌱 Interactive demo — sample data, clickable preview. Every action explains itself.</div>
 
@@ -554,18 +585,21 @@ document.addEventListener('click',function(ev){
   var el=ev.target.closest('[data-action]');
   if(el){
     var act=el.getAttribute('data-action');
+    if(act==='welcome-close'){ev.preventDefault();document.getElementById('welcome').classList.add('gone');return}
     if(act==='join'){ev.preventDefault();openModal('join');return}
     if(act==='close'){ev.preventDefault();closeModal();return}
     if(act==='scroll'){ev.preventDefault();var nv=document.querySelector('.nav');if(nv)nv.scrollIntoView({behavior:'smooth'});return}
     if(act==='demo'||act==='peace'){ev.preventDefault();openModal('demo');return}
   }
   if(ev.target===$('#overlay'))closeModal();
+  if(ev.target===$('#welcome'))$('#welcome').classList.add('gone');
 });
 document.addEventListener('submit',function(ev){
   var f=ev.target.closest('form[data-demo]');
   if(f){ev.preventDefault();openModal('demo')}
 });
 document.addEventListener('keydown',function(ev){
+  if(ev.key==='Escape'&&!$('#welcome').classList.contains('gone')){$('#welcome').classList.add('gone');return}
   if(ev.key==='Escape'&&$('#overlay').classList.contains('on'))closeModal();
   if((ev.key==='Enter'||ev.key===' ')&&ev.target.getAttribute&&ev.target.getAttribute('data-action')==='demo'){ev.preventDefault();openModal('demo')}
 });
