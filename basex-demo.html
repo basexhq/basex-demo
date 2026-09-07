@@ -200,6 +200,15 @@ textarea{resize:vertical}
 .partner-cta{background:var(--fg);color:#F6FAF2;padding:56px 0;margin-top:44px;text-align:center}
 .partner-cta .kicker{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-bright);display:block;margin-bottom:14px}
 .partner-cta h2{font-family:var(--mono);font-size:clamp(1.4rem,3.6vw,2.2rem);line-height:1.25;letter-spacing:-.02em;margin-bottom:16px}
+.partner-cta .steps{list-style:none;counter-reset:s;text-align:left;max-width:640px;margin:6px auto 28px;padding:0}
+.partner-cta .steps li{counter-increment:s;position:relative;padding:12px 0 12px 48px;font-size:.95rem;line-height:1.6;color:#D7E3D2;border-top:1px solid rgba(255,255,255,.12)}
+.partner-cta .steps li:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+.partner-cta .steps li b{color:#F6FAF2}
+.partner-cta .steps li::before{content:counter(s);position:absolute;left:0;top:14px;width:30px;height:30px;border-radius:50%;background:var(--amber-bright);color:var(--fg);font-family:var(--mono);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.partner-cta .open{margin:30px auto 0;max-width:640px;font-size:.84rem;line-height:1.65;color:#B9C9B3}
+.partner-cta .open b{color:#F6FAF2}
+.partner-cta .open a{color:var(--amber-bright);text-decoration:underline}
+.welcome p a{color:var(--green);text-decoration:underline}
 .partner-cta p{font-size:.95rem;color:#CDE3D2;max-width:56ch;margin:0 auto 26px;line-height:1.7}
 .partner-cta .btn{font-size:.92rem;padding:15px 32px}
 .partner-cta .sub{display:block;margin-top:14px;font-family:var(--mono);font-size:.72rem;color:#9DBCA6}
@@ -231,7 +240,7 @@ footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-hei
     <p><b>Work in progress, built in public.</b> Every improvement ships the day it's made, and
     the whole thinking process — design decisions, references, doubts — is out in the open.</p>
     <p><b>We're experimenting and building together.</b> With partners, with communities, with
-    you. If something feels wrong, that's a contribution: tell us.</p>
+    you. If something feels wrong, that's a contribution: <a href="mailto:email@genesis.re?subject=BaseX%20feedback">tell us</a>.</p>
     <button class="btn btn-primary" data-action="welcome-close" type="button">Enter the demo →</button>
   </div>
 </div>
@@ -291,15 +300,23 @@ footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-hei
 <section class="partner-cta"><div class="wrap">
   <span class="kicker">Partner with us — the one real button on this page</span>
   <h2>We create the new source of reality.</h2>
-  <p>Our whole focus right now is onboarding the first partners. Bring your impact data in
-  <b>any format</b> — a spreadsheet, a PDF, a link, a story told out loud — and we'll shape it
-  into claims, evaluations, and an honest price together. Early partners decide the best
-  approach with us, in public.</p>
+  <p>Our whole focus right now is bringing the first partners in. Baby steps:</p>
+  <ol class="steps">
+    <li><b>Say hi.</b> One line is enough — who you are, what you do.</li>
+    <li><b>Send your data in any format.</b> A spreadsheet, a PDF, a Karma GAP link, a paragraph
+    in an email, a story told out loud. Zero polish required.</li>
+    <li><b>We shape it together, in public.</b> Your data becomes claims, evaluations and an
+    honest price — and lands on this demo with your name on it.</li>
+  </ol>
   <a class="btn btn-primary" href="mailto:email@genesis.re?subject=BaseX%20founding%20partner">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
     Become a founding partner
   </a>
   <span class="sub">email@genesis.re · any format · zero polish required</span>
+  <p class="open"><b>Open source and transparent from the very beginning.</b> Every claim is a
+  readable file with visible history, every consensus method is versioned, every design decision
+  is written down. <a href="https://github.com/basexhq/basex-demo" target="_blank" rel="noopener">Code &amp; data on GitHub</a>
+  · <a href="https://github.com/basexhq/basex-demo/tree/main/templates" target="_blank" rel="noopener">Starter templates</a></p>
 </div></section>
 
 <footer><div class="wrap">
@@ -324,7 +341,9 @@ var DATA = {"entities":[{"idx":0,"name":"Veridian Energy","type":"Corporation","
 /* ---------- CONTACT LINKS — SWAP THESE PLACEHOLDERS ----------
    book:     your Calendly / booking URL
    telegram: your Telegram handle URL
-   mail:     already real                                        */
+   mail:     already real
+   Any door still containing YOUR-HANDLE is simply not rendered,
+   so visitors never hit a dead link.                             */
 var CONTACT = {
   book: 'https://calendly.com/YOUR-HANDLE/30min',
   telegram: 'https://t.me/YOUR-HANDLE',
@@ -373,11 +392,14 @@ function openModal(kind){
   if(kind==='join'){
     mk.textContent='🤝';
     t.textContent='You clicked Login / Register — we think that means you should join us :)';
-    b.textContent='BaseX is being built in the open with early partners. Book a 30-minute slot and let\u2019s see how we WIN WIN WIN \u2014 or ping us wherever you like. Three doors, same welcome.';
-    a.innerHTML='<a class="btn btn-primary" href="'+CONTACT.book+'" target="_blank" rel="noopener">'+ICON_PHONE+'Book 30 minutes</a>'
-      +'<a class="btn btn-ghost" href="'+CONTACT.telegram+'" target="_blank" rel="noopener">'+ICON_TG+'Telegram</a>'
-      +'<a class="btn btn-ghost" href="'+CONTACT.mail+'">'+ICON_MAIL+'Email us</a>'
-      +'<button class="btn btn-ghost" data-action="close" type="button">Just exploring</button>';
+    var doors=[[CONTACT.book,ICON_PHONE,'Book 30 minutes'],[CONTACT.telegram,ICON_TG,'Telegram'],[CONTACT.mail,ICON_MAIL,'Email us']]
+      .filter(function(d){return d[0]&&d[0].indexOf('YOUR-HANDLE')<0});
+    b.textContent='BaseX is being built in the open with early partners. Say hi \u2014 one line is enough \u2014 and let\u2019s see how we WIN WIN WIN.'
+      +(doors.length>1?' '+doors.length+' doors, same welcome.':'');
+    a.innerHTML=doors.map(function(d,i){
+      var ext=d[0].indexOf('mailto:')!==0;
+      return '<a class="btn '+(i===0?'btn-primary':'btn-ghost')+'" href="'+d[0]+'"'+(ext?' target="_blank" rel="noopener"':'')+'>'+d[1]+d[2]+'</a>';
+    }).join('')+'<button class="btn btn-ghost" data-action="close" type="button">Just exploring</button>';
   }else{
     mk.textContent='🌱';
     t.textContent='This is a clickable demo';

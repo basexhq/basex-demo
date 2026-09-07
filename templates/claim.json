@@ -1,0 +1,23 @@
+{
+  "_comment": "Starter template. Mirrors the shape BaseX stores (see data_dummy/README.md). Delete fields you don't have; add fields we didn't think of — anything extra is kept under `attributes`.",
+  "entity": {
+    "name": "Your organisation",
+    "entity_type": "Nonprofit | Cooperative | Corporation | Individual | Public body",
+    "sector": "e.g. Regenerative agriculture",
+    "description": "One paragraph, shown on the entity page."
+  },
+  "claims": [
+    {
+      "submitter_name": "Your name or handle (credit stays visible)",
+      "claim_text": "What happened, in one or two plain sentences.",
+      "impact_start": "2025-01-01",
+      "impact_end": "2025-12-31",
+      "location": "Place, region, or online",
+      "categories": ["Climate", "EBF:Carbon"],
+      "estimated_value_range": "$1M–$3M",
+      "confidence": "low | medium | high",
+      "evidence": ["https://example.org/report.pdf"],
+      "attributes": { "anything_else": "kept as-is, shown on the claim" }
+    }
+  ]
+}

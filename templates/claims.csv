@@ -1,0 +1,2 @@
+entity,entity_type,submitter,claim_text,impact_start,impact_end,location,categories,estimated_value_range,confidence,evidence
+Example Cooperative,Cooperative,jane_doe,"Restored 40 ha of degraded pasture to silvopasture, measured 30% higher soil organic carbon after two seasons.",2024-03-01,2025-10-31,"Alentejo, Portugal","Nature; EBF:Soil; EBF:Carbon; EBF:Biodiversity",$400K–$900K,medium,https://example.org/soil-report.pdf
