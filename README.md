@@ -18,7 +18,7 @@ Karma GAP, Giveth, Octant, and Artizen.
 
 ## Bring your data — onboarding, baby steps
 
-1. **Say hi** — one line is enough: email@genesis.re
+1. **Say hi** — one line is enough: info@basex.com
 2. **Send your data in any format** — spreadsheet, PDF, link, a paragraph, a story told out loud.
    Starter shapes in [`templates/`](templates/README.md) if a blank page feels hard.
 3. **We shape it together, in public** — it lands on this demo with your name on it.
@@ -27,4 +27,4 @@ Karma GAP, Giveth, Octant, and Artizen.
 visible history, every consensus method is versioned, every design decision is written down.
 Corrections are additive — nothing is edited silently.
 
-Contact: email@genesis.re
+Contact: info@basex.com
