@@ -12,7 +12,7 @@ use one if a blank page feels hard, ignore them if you already have data.
 
 ## How to send it
 
-- **Email:** email@genesis.re — attach anything, in any state of polish.
+- **Email:** info@basex.com — attach anything, in any state of polish.
 - **Pull request:** add a file under `data/` in the public repo. One record per file,
   so history stays readable and every change is visible.
 

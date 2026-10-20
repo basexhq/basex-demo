@@ -28,5 +28,5 @@ negative impact is welcome and important):
 
 ---
 
-Send to email@genesis.re, or open a pull request in the public repo.
+Send to info@basex.com, or open a pull request in the public repo.
 Any format works; this is only a starting point.
