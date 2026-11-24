@@ -1,7 +1,9 @@
 <!doctype html>
 <!--
   BaseX — single-file clickable demo.
-  Fully self-contained: no fonts, no CDN, no images, no network requests.
+  Self-contained: no images, no CDN scripts. The only network request is
+  Google Fonts (Inter + JetBrains Mono, same as basex.com); offline it falls
+  back to system fonts.
   Open this file directly (double-click), attach it to an email, or drop it
   on any static host — no build, no deploy step. It is also served by the
   app at /basex-demo.html.
@@ -159,10 +161,18 @@ a:hover{color:var(--blue-deep)}
 .consensus .lbl{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted);display:block;margin-bottom:4px}
 .consensus .band{font-family:var(--mono);font-size:1.25rem;font-weight:700;color:var(--blue-deep)}
 .consensus .sub{font-size:.78rem;color:var(--fg-dim);margin-top:4px}
-.blind{background:var(--card);border:1px dashed var(--border-b);border-radius:6px;padding:26px 22px;text-align:center;margin-bottom:28px}
-.blind .lock{font-size:1.5rem;margin-bottom:6px}
-.blind p{font-size:.86rem;color:var(--fg-dim);max-width:460px;margin:0 auto}
-.blind p b{color:var(--fg)}
+.blind,.empty{background:var(--card);border:1px dashed var(--border-b);border-radius:6px;padding:26px 22px;text-align:center;margin-bottom:28px}
+.empty .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.stoggle{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.74rem;font-weight:500;color:var(--fg-dim);text-transform:none;letter-spacing:0;margin:0;cursor:pointer;user-select:none;position:relative}
+.stoggle input{position:absolute;opacity:0;width:1px;height:1px}
+.stoggle .sw{width:30px;height:17px;border-radius:99px;background:var(--border-b);position:relative;flex-shrink:0;transition:background .15s}
+.stoggle .sw::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(13,20,36,.25);transition:transform .15s}
+.stoggle input:checked+.sw{background:var(--blue)}
+.stoggle input:checked+.sw::after{transform:translateX(13px)}
+.stoggle input:focus-visible+.sw{outline:2px solid var(--blue);outline-offset:2px}
+.blind .lock,.empty .lock{font-size:1.5rem;margin-bottom:6px}
+.blind p,.empty p{font-size:.86rem;color:var(--fg-dim);max-width:460px;margin:0 auto}
+.blind p b,.empty p b{color:var(--fg)}
 .ecard{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:10px}
 .ecard-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
 .eauthor{font-weight:600;font-size:.84rem}
@@ -247,7 +257,8 @@ footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-hei
   .cell[data-l]::before{content:attr(data-l);flex:0 0 60px;font-family:var(--mono);font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-muted);padding-top:2px}
   .dual{grid-template-columns:1fr}
   .orsep{text-align:center}
-  .navlinks{gap:12px;font-size:.78rem}
+  .nav-in{height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px;row-gap:8px}
+  .navlinks{width:100%;gap:8px 14px;font-size:.78rem}
 }
 </style>
 </head>
@@ -319,6 +330,9 @@ footer p{font-size:.78rem;color:var(--fg-muted);font-family:var(--mono);line-hei
     <a href="#/evaluators">Evaluators</a>
     <a href="#/docs">Docs</a>
     <a href="#/submit">Submit Claim</a>
+    <label class="stoggle" title="Everything in this preview is sample data. Switch it off to see only real data (none yet).">
+      <input type="checkbox" id="sample-toggle" checked><span class="sw" aria-hidden="true"></span><span>Sample data</span>
+    </label>
     <a href="#login" data-action="join">Login</a>
     <button class="btn-join" data-action="join" type="button">Join</button>
   </div>
@@ -381,6 +395,24 @@ var CONTACT = {
 var ICON_PHONE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 var ICON_TG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
 var ICON_MAIL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>';
+
+/* ---------- sample-data switch ----------
+   Everything in DATA comes from data_dummy/, so "off" hides it all and shows
+   an honest empty state. Remembered per visitor; on by default.          */
+var SAMPLE=true;
+try{SAMPLE=localStorage.getItem('basex-sample')!=='off'}catch(e){}
+function setSample(on){
+  SAMPLE=on;
+  try{localStorage.setItem('basex-sample',on?'on':'off')}catch(e){}
+  var cb=document.getElementById('sample-toggle');if(cb)cb.checked=on;
+  route();
+}
+function emptyState(what){
+  return '<div class="empty"><div class="lock">🌱</div>'
+    +'<p><b>No real '+what+' yet.</b><br>Everything in this preview is sample data, and it’s switched off. The first real claims will come from founding partners — yours could be one of them.</p>'
+    +'<div class="acts"><a class="btn btn-primary" href="mailto:info@basex.com?subject=BaseX%20founding%20partner">Become a founding partner</a>'
+    +'<button class="btn btn-ghost" data-action="sample-on" type="button">Show sample data</button></div></div>'
+}
 
 /* ---------- tiny helpers ---------- */
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -460,18 +492,20 @@ function feedRow(c,i){
     +'</a>'
 }
 function pageHome(){
-  var rows='';for(var i=0;i<DATA.claims.length;i++)rows+=feedRow(DATA.claims[i],i);
+  var rows='';if(SAMPLE)for(var i=0;i<DATA.claims.length;i++)rows+=feedRow(DATA.claims[i],i);
+  var st=SAMPLE?DATA.stats:{claims:0,ratings:0,evaluators:0};
   return '<section class="hero"><div class="wrap">'
     +'<h1>Evaluate Impact.<br><span class="accent">Prove Value.</span></h1>'
     +'<p>Permissionless claim submission. Independent evaluations. A real, challengeable consensus on what impact is worth \u2014 positive and negative.</p>'
-    +'<div class="stats"><span class="chip">'+DATA.stats.claims+' claims</span><span class="chip">'+DATA.stats.ratings+' evaluations</span><span class="chip">'+DATA.stats.evaluators+' evaluators</span><span class="chip">sample data</span></div>'
+    +'<div class="stats"><span class="chip">'+st.claims+' claims</span><span class="chip">'+st.ratings+' evaluations</span><span class="chip">'+st.evaluators+' evaluators</span><span class="chip">'+(SAMPLE?'sample data':'sample data off')+'</span></div>'
     +'<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-primary" href="#/submit">Submit a Claim</a><a class="btn btn-ghost" href="#feedtop">Browse Feed</a></div>'
     +'</div></section>'
     +'<section class="section" id="feedtop"><h2 class="sec-title">Claims Feed</h2>'
-    +'<div class="table"><div class="thead"><span>Claim</span><span>Category</span><span>Value Range</span><span>Evals</span><span>Status</span><span>Filed</span></div>'
-    +rows+'</div></section>'
+    +(SAMPLE?'<div class="table"><div class="thead"><span>Claim</span><span>Category</span><span>Value Range</span><span>Evals</span><span>Status</span><span>Filed</span></div>'+rows+'</div>':emptyState('claims'))
+    +'</section>'
 }
 function pageClaim(slug){
+  if(!SAMPLE)return pageHome();
   var c=null;for(var i=0;i<DATA.claims.length;i++)if(DATA.claims[i].slug===slug)c=DATA.claims[i];
   if(!c)return pageHome();
   var out='<a class="crumb" href="#/">\u2190 Back to feed</a>'
@@ -514,6 +548,7 @@ function pageClaim(slug){
   return out
 }
 function pageEntities(){
+  if(!SAMPLE)return '<section class="section"><h2 class="sec-title">Entities</h2>'+emptyState('entities')+'</section>';
   var rows='';
   for(var i=0;i<DATA.entities.length;i++){var e=DATA.entities[i];
     rows+='<a class="row" href="#/entity/'+i+'">'
@@ -525,7 +560,7 @@ function pageEntities(){
   return '<section class="section"><h2 class="sec-title">Entities</h2><div class="table simple"><div class="thead"><span>Name</span><span>Type</span><span>Sector</span><span>Claims</span></div>'+rows+'</div></section>'
 }
 function pageEntity(idx){
-  var e=DATA.entities[idx];if(!e)return pageEntities();
+  var e=SAMPLE&&DATA.entities[idx];if(!e)return pageEntities();
   var out='<a class="crumb" href="#/entities">\u2190 All entities</a>'
     +'<div class="profile-head"><h2>'+esc(e.name)+'</h2><p class="tagline">'+esc(e.type)+' \u00b7 '+esc(e.sector)+'</p><p style="font-size:.88rem;color:var(--fg-dim)">'+esc(e.desc)+'</p></div>'
     +'<h2 class="sec-title">Claims about this entity</h2>';
@@ -534,6 +569,7 @@ function pageEntity(idx){
   return out+'<div class="table"><div class="thead"><span>Claim</span><span>Category</span><span>Value Range</span><span>Evals</span><span>Status</span><span>Filed</span></div>'+rows+'</div>'
 }
 function pageEvaluators(){
+  if(!SAMPLE)return '<section class="section"><h2 class="sec-title">Evaluators</h2>'+emptyState('evaluators')+'</section>';
   var evs=[];for(var k in DATA.evaluators)evs.push(DATA.evaluators[k]);
   evs.sort(function(a,b){return b.score-a.score});
   var rows='';
@@ -549,7 +585,7 @@ function pageEvaluators(){
     +'<div class="table evrow"><div class="thead"><span>#</span><span>Name</span><span>Reputation</span><span>Accuracy</span><span>Domains</span></div>'+rows+'</div></section>'
 }
 function pageEvaluator(username){
-  var e=DATA.evaluators[username];if(!e)return pageEvaluators();
+  var e=SAMPLE&&DATA.evaluators[username];if(!e)return pageEvaluators();
   var out='<a class="crumb" href="#/evaluators">\u2190 All evaluators</a>'
     +'<div class="profile-head"><h2>'+esc(e.name)+'</h2><p class="tagline">'+esc(e.tagline)+'</p>'
     +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">'+tagsHtml(e.domains)+'</div>'
@@ -644,9 +680,13 @@ document.addEventListener('click',function(ev){
     if(act==='close'){ev.preventDefault();closeModal();return}
     if(act==='scroll'){ev.preventDefault();var nv=document.querySelector('.nav');if(nv)nv.scrollIntoView({behavior:'smooth'});return}
     if(act==='demo'||act==='peace'){ev.preventDefault();openModal('demo');return}
+    if(act==='sample-on'){ev.preventDefault();setSample(true);return}
   }
   if(ev.target===$('#overlay'))closeModal();
   if(ev.target===$('#welcome'))$('#welcome').classList.add('gone');
+});
+document.addEventListener('change',function(ev){
+  if(ev.target.id==='sample-toggle')setSample(ev.target.checked);
 });
 document.addEventListener('submit',function(ev){
   var f=ev.target.closest('form[data-demo]');
@@ -658,6 +698,7 @@ document.addEventListener('keydown',function(ev){
   if((ev.key==='Enter'||ev.key===' ')&&ev.target.getAttribute&&ev.target.getAttribute('data-action')==='demo'){ev.preventDefault();openModal('demo')}
 });
 
+document.getElementById('sample-toggle').checked=SAMPLE;
 route();
 </script>
 </body>
